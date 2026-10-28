@@ -1,0 +1,12 @@
+{
+  "name": "hoops-4-life-2p-rooms",
+  "private": true,
+  "description": "Game-room server for Hoops 4 Life 2P (Cloudflare Worker + Durable Objects)",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "test": "node test/rooms.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

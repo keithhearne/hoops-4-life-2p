@@ -8,6 +8,10 @@ The two-phone edition of [Hoops 4 Life](https://github.com/keithhearne/hoops-4-l
 - The host phone is the referee (scores, blocks, steals); the guest sends its controls and smooths what it sees
 - "Reconnecting…" pause when the signal drops (tunnels, switching masts)
 
+## Folders
+- the game (site files at the top level, master source in `source/`)
+- `server/`: the room server, deployed to Cloudflare automatically (see `server/README.md`)
+
 ## Branches
 - `main`: what the GitHub Pages site serves
 - `dev`: work in progress; merged to `main` when it's ready to try on the phones
