@@ -138,7 +138,7 @@ function setMood(e,m,t){const s=e===p?moods.p:moods.d; s.m=m; s.t=t||2.2;}
 // celebration pop-up with the manga portrait of whoever made the big play
 let celebrate={who:null,t:0,T:2.2};
 const BIG_PLAYS=["dunk","windmill","three","half","fire"];
-function celebrateFor(e,t){celebrate={who:e===p?"p":"d",t:t||2.2,T:t||2.2};}
+function celebrateFor(e,t){celebrate={who:e===p?"p":"d",t:t||2.2,T:t||2.2}; if(isHost()) TWO.ev.push(["c",celebrate.who,celebrate.t]);}
 const MANGA_SVG_Z="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"480\" viewBox=\"0 0 400 480\"> <defs><clipPath id=\"clipA\"><rect width=\"400\" height=\"480\" rx=\"20\"/></clipPath></defs> <g clip-path=\"url(#clipA)\" stroke=\"#1A1424\" stroke-linejoin=\"round\" stroke-linecap=\"round\"> <rect width=\"400\" height=\"480\" fill=\"#2F6FE4\" stroke=\"none\"/> <path d=\"M200 190 L900.0 190.0 L894.2 279.7 Z M200 190 L871.6 387.2 L840.8 471.7 Z M200 190 L788.9 568.4 L735.5 640.8 Z M200 190 L658.4 719.0 L586.8 773.4 Z M200 190 L490.8 826.7 L406.8 858.8 Z M200 190 L299.6 882.9 L210.0 889.9 Z M200 190 L100.4 882.9 L12.4 864.4 Z M200 190 L-90.8 826.7 L-170.0 784.2 Z M200 190 L-258.4 719.0 L-322.4 655.9 Z M200 190 L-388.9 568.4 L-432.5 489.9 Z M200 190 L-471.6 387.2 L-491.4 299.5 Z M200 190 L-500.0 190.0 L-494.2 100.3 Z M200 190 L-471.6 -7.2 L-440.8 -91.7 Z M200 190 L-388.9 -188.4 L-335.5 -260.8 Z M200 190 L-258.4 -339.0 L-186.8 -393.4 Z M200 190 L-90.8 -446.7 L-6.8 -478.8 Z M200 190 L100.4 -502.9 L190.0 -509.9 Z M200 190 L299.6 -502.9 L387.6 -484.4 Z M200 190 L490.8 -446.7 L570.0 -404.2 Z M200 190 L658.4 -339.0 L722.4 -275.9 Z M200 190 L788.9 -188.4 L832.5 -109.9 Z M200 190 L871.6 -7.2 L891.4 80.5 Z \" fill=\"#5C8EEA\" stroke=\"none\"/> <path d=\"M30 480 C40 410 90 380 160 366 L240 366 C310 380 360 410 370 480 Z\" fill=\"#F2C6A8\" stroke-width=\"5\"/> <path d=\"M172 296 L168 372 L232 372 L228 296 Z\" fill=\"#F2C6A8\" stroke-width=\"5\"/> <path d=\"M172 300 L229 300 L229 334 Q200 350 171 334 Z\" fill=\"#D9A285\" stroke=\"none\"/> <path d=\"M92 480 L100 404 C122 392 140 380 150 366 L172 366 L200 410 L228 366 L250 366 C260 380 278 392 300 404 L308 480 Z\" fill=\"#2F6FE4\" stroke-width=\"5\"/> <path d=\"M160 370 L200 422 L240 370\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"7\"/> <path d=\"M104 402 C124 391 141 379 152 368 M296 402 C276 391 259 379 248 368\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"6\"/> <text x=\"200\" y=\"476\" text-anchor=\"middle\" font-family=\"Bungee, 'Arial Black', sans-serif\" font-size=\"56\" fill=\"#FFFFFF\" stroke=\"#1A1424\" stroke-width=\"5\" paint-order=\"stroke\">11</text> <ellipse cx=\"116\" cy=\"205\" rx=\"21\" ry=\"29\" fill=\"#F2C6A8\" stroke-width=\"5\"/> <path d=\"M113 189 Q99 205 113 223\" fill=\"none\" stroke-width=\"3.5\"/> <ellipse cx=\"284\" cy=\"205\" rx=\"21\" ry=\"29\" fill=\"#F2C6A8\" stroke-width=\"5\"/> <path d=\"M287 189 Q301 205 287 223\" fill=\"none\" stroke-width=\"3.5\"/> <path d=\"M122 170 C120 245 150 300 200 322 C250 300 280 245 278 170 C278 100 245 66 200 66 C155 66 122 100 122 170 Z\" fill=\"#F2C6A8\" stroke=\"none\"/> <path d=\"M122 170 C120 245 150 300 200 322 C172 300 152 252 154 196 Z\" fill=\"#D9A285\" stroke=\"none\" opacity=\"0.75\"/> <path d=\"M128 160 L142 124 L150 152 L166 122 L176 156 L192 124 L206 160 L220 124 L236 158 L244 122 L258 152 L272 176 L126 178 Z\" fill=\"#D9A285\" stroke=\"none\"/> <path d=\"M122 170 C120 245 150 300 200 322 C250 300 280 245 278 170 C278 100 245 66 200 66 C155 66 122 100 122 170 Z\" fill=\"none\" stroke-width=\"5\"/> <path d=\"M124 190 L98 152 L120 140 L84 100 L128 100 L108 50 L155 78 L160 18 L192 62 L215 10 L234 62 L270 24 L264 84 L312 64 L284 112 L322 118 L286 148 L302 182 L276 172 L258 152 L244 122 L236 158 L220 124 L206 160 L192 124 L176 156 L166 122 L150 152 L142 124 L128 160 Z\" fill=\"#E3B85A\" stroke-width=\"5\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\"/> <path d=\"M160 18 L168 74 L178 70 Z M215 10 L214 66 L224 66 Z M108 50 L140 96 L148 88 Z M270 24 L248 76 L258 80 Z M84 100 L124 118 L126 108 Z M312 64 L270 104 L278 110 Z\" fill=\"#B98A35\" stroke=\"none\"/> <path d=\"M146 96 Q200 74 256 96\" fill=\"none\" stroke=\"#FFF1C9\" stroke-width=\"7\" opacity=\"0.85\"/> <path d=\"M140 178 L184 170 M216 170 L260 178\" fill=\"none\" stroke-width=\"9\"/> <ellipse cx=\"164\" cy=\"208\" rx=\"22\" ry=\"25\" fill=\"#FFFFFF\" stroke-width=\"4\"/> <circle cx=\"168\" cy=\"211\" r=\"12\" fill=\"#6E8A9A\" stroke=\"none\"/> <circle cx=\"168\" cy=\"211\" r=\"6\" fill=\"#1A1424\" stroke=\"none\"/> <circle cx=\"173\" cy=\"205\" r=\"3.6\" fill=\"#FFFFFF\" stroke=\"none\"/> <path d=\"M140 202 Q164 178 188 199 M140 202 L129 194\" fill=\"none\" stroke-width=\"8\"/> <ellipse cx=\"236\" cy=\"208\" rx=\"22\" ry=\"25\" fill=\"#FFFFFF\" stroke-width=\"4\"/> <circle cx=\"240\" cy=\"211\" r=\"12\" fill=\"#6E8A9A\" stroke=\"none\"/> <circle cx=\"240\" cy=\"211\" r=\"6\" fill=\"#1A1424\" stroke=\"none\"/> <circle cx=\"245\" cy=\"205\" r=\"3.6\" fill=\"#FFFFFF\" stroke=\"none\"/> <path d=\"M212 199 Q236 178 260 202 M260 202 L271 194\" fill=\"none\" stroke-width=\"8\"/> <path d=\"M200 226 L192 248 L205 250\" fill=\"none\" stroke-width=\"4\"/> <path d=\"M138 242 l-7 11 M149 242 l-7 11 M160 242 l-7 11 M240 242 l7 11 M251 242 l7 11 M262 242 l7 11\" fill=\"none\" stroke=\"#C84646\" stroke-width=\"3.5\"/> <path d=\"M130 256 Q200 270 270 256 Q262 314 200 318 Q138 314 130 256 Z\" fill=\"#FFFFFF\" stroke-width=\"5\"/> <path d=\"M136 282 Q200 296 264 282\" fill=\"none\" stroke-width=\"3\"/> <path d=\"M152 262 L152 306 M168 265 L168 312 M184 266 L184 315 M216 266 L216 315 M232 265 L232 312 M248 262 L248 306\" fill=\"none\" stroke-width=\"2.5\"/> <rect x=\"195\" y=\"266\" width=\"10\" height=\"22\" fill=\"#1A1424\" stroke=\"none\"/> <path d=\"M124 250 l9 9 M276 250 l-9 9\" fill=\"none\" stroke-width=\"4\"/> </g> </svg>";
 const MANGA_SVG_K="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"480\" viewBox=\"0 0 400 480\"> <defs><clipPath id=\"clipB\"><rect width=\"400\" height=\"480\" rx=\"20\"/></clipPath></defs> <g clip-path=\"url(#clipB)\" stroke=\"#1A1424\" stroke-linejoin=\"round\" stroke-linecap=\"round\"> <rect width=\"400\" height=\"480\" fill=\"#FFC93C\" stroke=\"none\"/> <path d=\"M200 190 L900.0 190.0 L894.2 279.7 Z M200 190 L871.6 387.2 L840.8 471.7 Z M200 190 L788.9 568.4 L735.5 640.8 Z M200 190 L658.4 719.0 L586.8 773.4 Z M200 190 L490.8 826.7 L406.8 858.8 Z M200 190 L299.6 882.9 L210.0 889.9 Z M200 190 L100.4 882.9 L12.4 864.4 Z M200 190 L-90.8 826.7 L-170.0 784.2 Z M200 190 L-258.4 719.0 L-322.4 655.9 Z M200 190 L-388.9 568.4 L-432.5 489.9 Z M200 190 L-471.6 387.2 L-491.4 299.5 Z M200 190 L-500.0 190.0 L-494.2 100.3 Z M200 190 L-471.6 -7.2 L-440.8 -91.7 Z M200 190 L-388.9 -188.4 L-335.5 -260.8 Z M200 190 L-258.4 -339.0 L-186.8 -393.4 Z M200 190 L-90.8 -446.7 L-6.8 -478.8 Z M200 190 L100.4 -502.9 L190.0 -509.9 Z M200 190 L299.6 -502.9 L387.6 -484.4 Z M200 190 L490.8 -446.7 L570.0 -404.2 Z M200 190 L658.4 -339.0 L722.4 -275.9 Z M200 190 L788.9 -188.4 L832.5 -109.9 Z M200 190 L871.6 -7.2 L891.4 80.5 Z \" fill=\"#FFDB7A\" stroke=\"none\"/> <path d=\"M30 480 C40 410 90 380 160 366 L240 366 C310 380 360 410 370 480 Z\" fill=\"#F0C3A7\" stroke-width=\"5\"/> <path d=\"M174 300 L168 372 L232 372 L226 300 Z\" fill=\"#F0C3A7\" stroke-width=\"5\"/> <path d=\"M174 304 L227 304 L228 338 Q200 354 172 338 Z\" fill=\"#D4A086\" stroke=\"none\"/> <path d=\"M92 480 L100 404 C122 392 140 380 150 366 L172 366 L200 410 L228 366 L250 366 C260 380 278 392 300 404 L308 480 Z\" fill=\"#FFC93C\" stroke-width=\"5\"/> <path d=\"M160 370 L200 422 L240 370\" fill=\"none\" stroke=\"#1B2340\" stroke-width=\"7\"/> <path d=\"M104 402 C124 391 141 379 152 368 M296 402 C276 391 259 379 248 368\" fill=\"none\" stroke=\"#1B2340\" stroke-width=\"6\"/> <text x=\"200\" y=\"476\" text-anchor=\"middle\" font-family=\"Bungee, 'Arial Black', sans-serif\" font-size=\"56\" fill=\"#1B2340\" stroke=\"#FFFFFF\" stroke-width=\"5\" paint-order=\"stroke\">3</text> <ellipse cx=\"118\" cy=\"208\" rx=\"17\" ry=\"25\" fill=\"#F0C3A7\" stroke-width=\"5\"/> <path d=\"M115 194 Q104 208 115 223\" fill=\"none\" stroke-width=\"3.5\"/> <ellipse cx=\"282\" cy=\"208\" rx=\"17\" ry=\"25\" fill=\"#F0C3A7\" stroke-width=\"5\"/> <path d=\"M285 194 Q296 208 285 223\" fill=\"none\" stroke-width=\"3.5\"/> <path d=\"M124 168 C122 250 152 306 200 328 C248 306 278 250 276 168 C276 100 244 70 200 70 C156 70 124 100 124 168 Z\" fill=\"#F0C3A7\" stroke=\"none\"/> <path d=\"M124 168 C122 250 152 306 200 328 C172 306 154 256 156 196 Z\" fill=\"#D4A086\" stroke=\"none\" opacity=\"0.75\"/> <path d=\"M124 168 C122 250 152 306 200 328 C248 306 278 250 276 168 C276 100 244 70 200 70 C156 70 124 100 124 168 Z\" fill=\"none\" stroke-width=\"5\"/> <path d=\"M126 190 L118 140 L126 92 L150 48 L190 22 L242 8 L300 16 L334 42 L326 78 L304 64 L308 98 L284 106 L286 142 L276 180 L268 136 L234 120 L200 117 L166 121 L140 134 L132 162 Z\" fill=\"#6B4A32\" stroke-width=\"5\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\"/> <path d=\"M126 190 L118 140 L134 146 L136 184 Z M276 180 L286 142 L272 140 Z\" fill=\"#8C6A4E\" stroke=\"none\"/> <path d=\"M318 34 Q232 26 150 60 M318 72 Q230 56 138 98 M290 100 Q222 92 148 124\" fill=\"none\" stroke=\"#3E2A1C\" stroke-width=\"4\"/> <path d=\"M286 24 Q226 26 176 44\" fill=\"none\" stroke=\"#A07A58\" stroke-width=\"7\"/> <path d=\"M140 176 L186 170 M214 164 L260 170\" fill=\"none\" stroke=\"#3A2416\" stroke-width=\"10\"/> <ellipse cx=\"164\" cy=\"208\" rx=\"21\" ry=\"22\" fill=\"#FFFFFF\" stroke-width=\"4\"/> <circle cx=\"169\" cy=\"211\" r=\"11.5\" fill=\"#5A3A22\" stroke=\"none\"/> <circle cx=\"169\" cy=\"211\" r=\"6\" fill=\"#1A1424\" stroke=\"none\"/> <circle cx=\"174\" cy=\"205\" r=\"3.4\" fill=\"#FFFFFF\" stroke=\"none\"/> <path d=\"M141 203 Q164 182 186 200 M141 203 L130 196\" fill=\"none\" stroke-width=\"8\"/> <ellipse cx=\"236\" cy=\"206\" rx=\"21\" ry=\"23\" fill=\"#FFFFFF\" stroke-width=\"4\"/> <circle cx=\"241\" cy=\"209\" r=\"11.5\" fill=\"#5A3A22\" stroke=\"none\"/> <circle cx=\"241\" cy=\"209\" r=\"6\" fill=\"#1A1424\" stroke=\"none\"/> <circle cx=\"246\" cy=\"203\" r=\"3.4\" fill=\"#FFFFFF\" stroke=\"none\"/> <path d=\"M214 198 Q236 178 259 200 M259 200 L270 192\" fill=\"none\" stroke-width=\"8\"/> <path d=\"M200 228 L193 252 L206 254\" fill=\"none\" stroke-width=\"4\"/> <path d=\"M140 246 l-7 11 M151 246 l-7 11 M162 246 l-7 11 M238 244 l7 11 M249 244 l7 11 M260 244 l7 11\" fill=\"none\" stroke=\"#C84646\" stroke-width=\"3.5\"/> <path d=\"M136 262 Q204 276 272 250 Q258 314 198 318 Q146 314 136 262 Z\" fill=\"#FFFFFF\" stroke-width=\"5\"/> <path d=\"M141 286 Q204 298 266 276\" fill=\"none\" stroke-width=\"3\"/> <path d=\"M156 268 L156 308 M172 271 L172 314 M188 272 L188 317 M204 272 L204 317 M220 269 L220 315 M236 265 L236 311 M252 259 L252 302\" fill=\"none\" stroke-width=\"2.5\"/> <path d=\"M130 256 l9 9 M278 244 l-8 10\" fill=\"none\" stroke-width=\"4\"/> </g> </svg>";
 const MIMG={zackie:new Image(), keelan:new Image()};
@@ -164,7 +164,7 @@ function targetFor(power,range,auto){
   // the further off the timing, the further off the aim: just early = front of the rim, just late = back of the rim
   return power<range[0] ? RR.x-(20+(range[0]-power)*1.5) : RR.x+Math.min(15,11.8+Math.random()*2.6+(power-range[1])*0.4);   // just late: onto the back of the rim, sometimes it rattles in
 }
-function say(text,sub,color){msg={text,sub:sub||"",t:1.9,color:color||C.ink};}
+function say(text,sub,color){msg={text,sub:sub||"",t:1.9,color:color||C.ink}; if(isHost()) TWO.ev.push(["m",text,sub||"",color||C.ink]);}
 function body(e,dt){if(!e.ground){e.vy+=G*dt;e.y+=e.vy*dt;if(e.y>=FLOOR){e.y=FLOOR;e.vy=0;e.ground=true;}}}
 function pickSpot(){
   const r=Math.random();
@@ -383,6 +383,8 @@ const SFX={
 };
 const CROWD_SFX=["cheer","groan","gasp"];   // the crowd's reactions; everything else is the ball, the hoop, the whistle or the buttons
 function play(name,arg){
+  if(isHost() && !["dribble","tick","click"].includes(name)) TWO.ev.push(["s",name,arg===undefined?null:arg]);
+  if(TWO.mute) return;
   if(!SND.on||!SND.ctx||SND.ctx.state!=="running") return;
   if(!SND.crowd && CROWD_SFX.includes(name)) return;
   const now=performance.now(); if(now-(SND.last[name]||0)<45) return;   // the same sound can't stack up in one moment
@@ -502,11 +504,11 @@ function crowdUpdate(dt){
   if(CROWD.deflate>0){ CROWD.deflate-=dt; target*=0.35; }   // a miss: the air goes out of the crowd
   // the chant: 2-4 seconds after the opponent gets the ball (on about 3 of every 4 of his possessions),
   // and it fades as soon as you get the ball back
-  const defending=screen==="play" && !tip.on && (owner===d || (ball.state==="flight"&&ball.shooter===d));
+  const defending=screen==="play" && !tip.on && (owner===foeE() || (ball.state==="flight"&&ball.shooter===foeE()));
   if(defending && !CROWD.wasDef){ CROWD.chantWait=2+Math.random()*2; CROWD.chantArmed=Math.random()<0.75; }
   CROWD.wasDef=defending;
   if(defending && CROWD.chantArmed){ CROWD.chantWait-=dt; if(CROWD.chantWait<=0){ chantStart(); CROWD.chantArmed=false; } }
-  else if(!defending && CROWD.chant && owner===p) chantStop(0.3);
+  else if(!defending && CROWD.chant && owner===meE()) chantStop(0.3);
   // smooth in JavaScript first (time constant about 0.35 s), then hand the audio thread short straight ramps
   CROWD.level+=(target-CROWD.level)*Math.min(1,dt/(target>CROWD.level?0.7:0.35));   // builds slowly, settles faster
   const now=c.currentTime;
@@ -562,6 +564,7 @@ function jagged(x0,y0,x1,y1,n,amp){
 function makeBolts(side){const bx=side==="R"?780:63; return [0,1].map(k=>jagged(bx+(Math.random()-0.5)*170,0,bx,148+k*34,9,46));}
 // a made dunk: lightning hits the backboard and glass flies; a windmill shatters the whole board
 function startBoardFx(side,wind){
+  if(isHost()) TWO.ev.push(["b",side,wind?1:0]);
   const bx=side==="R"?780:63, inward=side==="R"?-1:1, n=wind?48:16, shards=[];
   for(let i=0;i<n;i++) shards.push({x:bx+(Math.random()-0.5)*6, y:142+Math.random()*58,
     vx:inward*(40+Math.random()*(wind?280:150))+(Math.random()-0.5)*60, vy:-60-Math.random()*(wind?230:120),
@@ -576,6 +579,7 @@ function startBoardFx(side,wind){
 const CRACK_T=2.0, CRACK_SMASH=0.15, CRACK_ALL=1.3;
 function withLengths(pts){let d=0; const cum=[0]; for(let i=1;i<pts.length;i++){d+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); cum.push(d);} return {pts,cum,len:d};}
 function startCrackFx(){
+  if(isHost()) TWO.ev.push(["k"]);
   const cx=W/2+(Math.random()-0.5)*60, cy=H/2-20+(Math.random()-0.5)*30, n=16, lines=[], rings=[], branches=[];
   for(let i=0;i<n;i++){const a=i/n*Math.PI*2+(Math.random()-0.5)*0.35, len=560+Math.random()*200;
     lines.push(withLengths(jagged(cx,cy,cx+Math.cos(a)*len,cy+Math.sin(a)*len,16,20)));}
@@ -790,6 +794,8 @@ function checkRollIn(prevY){
 // ---------- update ----------
 function update(dt){
   crowdUpdate(dt);   // the crowd follows the play
+  if(isGuest()){ guestUpdate(dt); return; }   // 2 Player guest: draw what the host sends
+  if(isHost()) twoHostTick(dt);
   if(screen!=="play"){updateNets(dt); return;}
   if(gameOverT>0){gameOverT-=dt; if(gameOverT<=0){endGame(); return;}}
   if(pendingInbound){inboundT-=dt; if(inboundT<=0){const w=pendingInbound;pendingInbound=null; if(gameOverT<=0) inbound(w);}}
@@ -813,7 +819,7 @@ function update(dt){
     if(jumpQueued && p.ground){p.vy=-380*(PS?PS.jump:1);p.ground=false;p.dbl=false; play("squeak");}
     else if(jumpQueued && !p.ground && !p.dbl && playerDefending()){
       // double jump: only works if the second tap lands near the top of the first jump
-      if(apexWindow()){p.vy=-380*(PS?PS.jump:1); p.dbl=true; dblFx={t:0.45,x:p.x,y:p.y};}
+      if(apexWindow()){p.vy=-380*(PS?PS.jump:1); p.dbl=true; dblFx={t:0.45,x:p.x,y:p.y}; if(isHost()) TWO.ev.push(["j","p",n1(p.x),n1(p.y)]);}
       else {p.dbl=true; dblMiss=0.6;}
     }
     // jump shot hang time: while powering up in the air the player freezes, and drops after the release
@@ -849,7 +855,8 @@ function update(dt){
   }
   if(Math.abs(joy)>0.5) pJoyLast=joy;
   // computer
-  if(cpuOn){ bossTick(dt); cpuUpdate(dt); }
+  if(isHost()) remoteUpdate(dt);   // 2 Player: the other phone's controls
+  else if(cpuOn){ bossTick(dt); cpuUpdate(dt); }
   updateFacing(joy);
 
   // ball
@@ -984,7 +991,8 @@ function resolveDunk(dk,e,dir,rim,dunkX){
   // the defender can stuff a dunk: the CPU has a small chance if it is close,
   // you get a bigger chance if you are in the air near the rim at the slam
   const stuffed = byP
-    ? (cpuOn && Math.abs(d.x-dunkX)<(sig.on==="dunkblock"?140:80) && Math.random()<(sig.on==="dunkblock"?1:SKILL.blockDunk))
+    ? (TWO.on ? (!d.ground && Math.abs(d.x-dunkX)<75 && Math.random()<0.5)
+       : (cpuOn && Math.abs(d.x-dunkX)<(sig.on==="dunkblock"?140:80) && Math.random()<(sig.on==="dunkblock"?1:SKILL.blockDunk)))
     : (!p.ground && Math.abs(p.x-dunkX)<75 && Math.random()<0.5);
   if(stuffed){
     dk.hang=0.02; shakeT=0.15; owner=null; if(byP) stats.streak=0;
@@ -1175,6 +1183,7 @@ function makeNet(rimX){
 }
 const NETS=[makeNet(67),makeNet(737)];
 function netKick(i,down,side){
+  if(isHost()) TWO.ev.push(["n",i,down,side]);
   for(const pt of NETS[i].pts){ if(pt.fixed) continue; const k=(pt.ry-189)/(NET_ROWS*6.6);
     pt.py-=down*k; pt.px-=(side||0)*k; }
 }
@@ -1263,6 +1272,7 @@ const ARENAS=[
 ];
 // levels play in their own arena; quick games and practice play in the arena of the level the player has reached
 function currentArena(){
+  if(TWO.on && (screen==="play"||screen==="pause"||screen==="over")) return ARENAS[TWO.arena];
   if(!(screen==="play"||screen==="pause"||screen==="over")) return null;
   const n = mode==="level" ? level : Math.min(progress[human],LEVELS-1);
   return ARENAS[Math.floor(n/STOPS)%ARENAS.length];
@@ -1472,9 +1482,10 @@ function loadSave(){
     }
     if(s.sound===false) SND.on=false;
     if(s.crowd===false) SND.crowd=false;
+    if(s.h2h) for(const b of ["zackie","keelan"]) if(s.h2h[b]) h2h[b]={w:Math.max(0,s.h2h[b].w|0),l:Math.max(0,s.h2h[b].l|0)};
   }catch(_){}
 }
-function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({kits,human,wins,progress,medals,crowns,owned,skinOf,bonus,spent,extraBalls,shoesOwned,sound:SND.on,crowd:SND.crowd}));}catch(_){}}
+function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({kits,human,wins,progress,medals,crowns,owned,skinOf,bonus,spent,extraBalls,shoesOwned,h2h,sound:SND.on,crowd:SND.crowd}));}catch(_){}}
 
 // ---------- screens: title, setup, play, pause, game over ----------
 let screen="title", mode="vs", overWinner="p", ui=[];
@@ -1500,6 +1511,7 @@ function startGame(){
   else say("Shooting practice",NAME.p+", shoot as much as you like",C.ink);
 }
 function endGame(){
+  if(TWO.on){ twoHostEnd(); return; }
   const youWin=stats.score>=WIN; overWinner=youWin?"p":"d";
   if(youWin) wins[human]=(wins[human]||0)+1;
   newRoad=false; newAward=null;
@@ -2233,7 +2245,7 @@ function saveKey(code,role,key){ try{sessionStorage.setItem("h4l2p:"+code+":"+ro
 function loadKey(code,role){ try{return sessionStorage.getItem("h4l2p:"+code+":"+role)||"";}catch(_){return "";} }
 function netSend(obj){ try{ if(LINK.ws && LINK.ws.readyState===1) LINK.ws.send(JSON.stringify(obj)); }catch(_){} }
 // tell the other phone who's playing on this phone (the boy and his kit colours: nothing personal)
-function sendIntro(){ const k=kits[human]; netSend({t:"intro",boy:human,main:k.main,trim:k.trim}); }
+function sendIntro(){ const k=kits[human]; netSend({t:"intro",boy:human,main:k.main,trim:k.trim,skin:skinOf[human]||null}); }
 
 async function hostGame(){
   if(LINK.busy) return; netReset("creating"); LINK.busy=true; LINK.note="";
@@ -2265,7 +2277,7 @@ function connect(role){
       LINK.note=role==="guest"?"Couldn't join "+code+": check the code. The game may be full or finished.":"Couldn't open the game. Try again.";
       LINK.typed=role==="guest"?LINK.typed:""; return; }
     if(e.code===4002){ netReset("menu"); LINK.note="That game has finished."; return; }
-    LINK.peer=false; LINK.stage="lost"; LINK.note="Connection lost. Reconnecting…";
+    LINK.peer=false; LINK.stage="lost"; LINK.note="Connection lost. Reconnecting…"; twoPeerLeft();
     setTimeout(()=>{ if(gen===LINK.gen && LINK.stage==="lost") connect(role); },1500);   // try again with the same code and key
   };
 }
@@ -2274,17 +2286,18 @@ function onNetMessage(raw){
   if(typeof raw!=="string" || raw.length>4096) return;
   let m; try{ m=JSON.parse(raw); }catch(_){ return; }
   if(!m || typeof m!=="object" || typeof m.t!=="string") return;
+  if(onTwoMessage(m)) return;   // match messages
   if(m.t==="hello"){
     if(typeof m.key==="string" && m.key.length<=64){ LINK.key=m.key; saveKey(LINK.code,LINK.role,m.key); }
     LINK.peer=!!m.peer; LINK.stage=LINK.peer?"meeting":(LINK.role==="host"?"hosting":"waiting");
-    if(LINK.peer) sendIntro();
+    if(LINK.peer){ sendIntro(); twoPeerBack(); }
   } else if(m.t==="peer"){
-    if(m.s==="joined"){ LINK.peer=true; LINK.stage="meeting"; sendIntro(); play("tick"); }
-    else if(m.s==="left"){ LINK.peer=false; LINK.other=null; LINK.stage=LINK.role==="host"?"hosting":"waiting"; LINK.note="The other phone left. Waiting for it to come back…"; }
+    if(m.s==="joined"){ LINK.peer=true; LINK.stage="meeting"; sendIntro(); play("tick"); twoPeerBack(); }
+    else if(m.s==="left"){ twoPeerLeft(); LINK.peer=false; LINK.other=null; LINK.stage=LINK.role==="host"?"hosting":"waiting"; LINK.note="The other phone left. Waiting for it to come back…"; }
   } else if(m.t==="intro"){
     if(!BOYS[m.boy]) return;
     const main=MAINS[m.main]?m.main:"blue", trim=TRIMS[m.trim]?m.trim:"white";
-    LINK.other={boy:m.boy,main,trim}; LINK.stage="connected"; LINK.note=""; play("cheer",0.8);
+    LINK.other={boy:m.boy,main,trim,skin:okSkin(m.skin)}; LINK.stage="connected"; LINK.note=""; if(!TWO.on) play("cheer",0.8);
   }
 }
 
@@ -2345,7 +2358,8 @@ function drawOnline(){
       text(BOYS[LINK.other.boy].name+" (other phone)",W/2+110,280,BODY(12,900),C.ink,"center");
       text("vs",W/2,236,DISP(18),C.muted,"center");
       if(LINK.other.boy===human) text("You're both "+BOYS[human].name+"! One of you can switch on the map",W/2,300,BODY(11,900),C.warn,"center");
-      button(W/2+150,326,150,44,"PLAY",{fill:"#2F6FE4",disabled:true,sub:"matches coming next"});
+      if(LINK.role==="host") button(W/2+150,326,150,44,"PLAY",{fill:"#2F6FE4",sub:"Random arena"},twoStartAsHost);
+      else text("Waiting for "+BOYS[LINK.other.boy].name+" to start…",W/2+225,348,BODY(12,900),C.ink,"center");
     } else text(line||"",W/2,226,BODY(16,900),col,"center");
     button(W/2-300,326,150,44,LINK.stage==="connected"?"LEAVE":"CANCEL",{},()=>{ netReset("menu"); LINK.note=""; });
   }
@@ -2362,6 +2376,347 @@ function onlineKey(k){
   const ch=(k||"").toUpperCase();
   if(ch.length===1 && CODE_CHARS.includes(ch)){ if(LINK.typed.length<5) LINK.typed+=ch; LINK.note=""; return true; }
   return false;
+}
+// ---------- 2 PLAYER MATCH: the host phone runs the game, the guest phone sends its controls ----------
+// Host (player one) = the left player "p", attacking the right hoop. Guest (player two) = the right player "d",
+// attacking the left hoop. Both phones show the same court. The host runs every rule (scores, blocks, steals),
+// and about 20 times a second sends the guest where everything is, plus events (sounds, messages, effects).
+// The guest moves its own player straight away and times its own power bar, so its shots are judged
+// exactly as it saw them, however slow the connection.
+const TWO={on:false,role:null,arena:0,pBoy:"zackie",dBoy:"keelan",
+  rin:{jx:0,jy:0}, jumpReq:false, stealCool:0, ev:[], sendT:0, seq:0,
+  snaps:[], last:null, paused:false, pausedBy:"", waiting:false, ended:false, winner:null, mute:false,
+  gc:{on:false,power:0,fade:false,shown:0,lastPower:0,range:null,zone:null,sentFade:false,auto:false},
+  predX:null, lastIn:0, lastJy:0, sentWind:false, needUp:false, prevShoot:false, h2hDone:false};
+let h2h={zackie:{w:0,l:0},keelan:{w:0,l:0}};   // head-to-head record of each boy in 2 Player matches
+const isHost=()=>TWO.on&&TWO.role==="host", isGuest=()=>TWO.on&&TWO.role==="guest";
+const meE=()=>isGuest()?d:p, foeE=()=>isGuest()?p:d;
+const n1=v=>Math.round(v*10)/10;
+const num=(v,lo,hi,def)=>{v=+v; return Number.isFinite(v)?clamp(v,lo,hi):def;};
+const okSkin=s=>typeof s==="string" && /^boss\d{1,2}$/.test(s) && +s.slice(4)<BOSSES.length ? s : null;
+const okKit=k=>({main:MAINS[k&&k.main]?k.main:"blue", trim:TRIMS[k&&k.trim]?k.trim:"white"});
+function inKeyL(x){return x>=W-KEY.x1 && x<=W-KEY.x0;}   // the left hoop's dunk zone
+function lookOf(boy,skin,kit,dir){
+  let b=BOYS[boy];
+  if(skin){const i=+skin.slice(4), bl=bossLook(i); b=Object.assign({},b,{name:BOSSES[i].name,num:bl.num,skin:bl.skin,skinDark:bl.skinDark,
+    hair:bl.hair,hairHi:bl.hairHi,brow:bl.brow,eye:bl.eye,style:bl.style,gapTeeth:bl.gapTeeth,bigEars:bl.bigEars,band:bl.band});}
+  return kitLook(b,kit,dir);
+}
+
+// --- starting a match ---
+function twoStartAsHost(){
+  if(!LINK.other || !LINK.ws) return;
+  const arena=Math.floor(Math.random()*ARENAS.length);
+  const s={t:"start",arena,pBoy:human,pKit:okKit(kits[human]),pSkin:skinOf[human]||null,
+    dBoy:LINK.other.boy,dKit:okKit({main:LINK.other.main,trim:LINK.other.trim}),dSkin:LINK.other.skin||null};
+  netSend(s); beginMatch("host",s);
+}
+function beginMatch(role,s){
+  TWO.on=true; TWO.role=role; TWO.arena=s.arena; TWO.pBoy=s.pBoy; TWO.dBoy=s.dBoy;
+  TWO.ended=false; TWO.winner=null; TWO.paused=false; TWO.waiting=false; TWO.snaps=[]; TWO.last=null; TWO.ev=[];
+  TWO.gc.on=false; TWO.gc.shown=0; TWO.predX=null; TWO.h2hDone=false; TWO.rin={jx:0,jy:0}; TWO.jumpReq=false;
+  BOSS=null; BS=null; PS=null; mode="2p";
+  LOOK.p=lookOf(s.pBoy,s.pSkin,s.pKit,1); LOOK.p.who="p";
+  LOOK.d=lookOf(s.dBoy,s.dSkin,s.dKit,-1); LOOK.d.who="d";
+  C.p1=MAINS[s.pKit.main]; C.p2=MAINS[s.dKit.main]; NAME.p=LOOK.p.name; NAME.d=LOOK.d.name;
+  if(C.p1===C.p2) C.p2=mix(C.p2,"#000000",0.3);   // same jersey colour: darken one so the scoreboard tells them apart
+  Object.assign(stats,{score:0,cpu:0,made:0,att:0,streak:0,best:0,threes:0,dunks:0,blk:0,stl:0});
+  stealCool=0; stealSwipe=0; stealMsg.t=0; prevAction=true; boardFx.t=0; crackFx.t=0;
+  SKILL=Object.assign({},SKILL_BASE); WIN=21; resetBoss(); cpuOn=true;
+  pendingInbound=null; gameOverT=0; celebrate.t=0; charge.shown=0; dblFx.t=0; cpuFx.t=0;
+  moods.p.m=moods.d.m="happy"; moods.p.t=moods.d.t=0;
+  touchJoy=0; touchJoyY=0; shootTouch=false; shootKey=false; needRelease=true;
+  lastShot=role==="host"?"You're on the left: score on the right hoop":"You're on the right: score on the left hoop";
+  inbound("p"); screen="play"; tip.on=false; tip.fade=0;
+  if(role==="host"){ startTip(); tip.cpuAt=99; }   // nobody's computer jumps: the guest jumps for himself
+  else { tip.on=true; tip.t=0; tip.tossed=false; }
+}
+
+// --- the host: the guest's player is driven by the guest's controls ---
+function remoteUpdate(dt){
+  if(TWO.stealCool>0) TWO.stealCool-=dt;
+  const jx=TWO.rin.jx;
+  if(TWO.jumpReq){ TWO.jumpReq=false;
+    if(d.ground && !cdunk.on){ d.vy=-380; d.ground=false; d.dbl=false; d.jumped=true; play("squeak"); }
+    else if(!d.ground && !d.dbl && (owner===p||(ball.state==="flight"&&ball.shooter===p)) && Math.abs(d.vy)<APEX_VY*2.5){ d.vy=-380; d.dbl=true; cpuFx={t:0.45,x:d.x,y:d.y}; TWO.ev.push(["j","d",n1(d.x),n1(d.y)]); }
+    else if(!d.ground) d.dbl=true;
+  }
+  if(tip.on){ updateTip(dt); body(d,dt); return; }
+  if(cdunk.on){ runDunk(cdunk,d,-1,RL,CPU_DUNK_X,dt); return; }
+  d.x=clamp(d.x+jx*(cpu.charging?70:170)*dt,24,812);
+  if(cpu.charging && !d.ground){ d.vy = d.vy<0 ? d.vy+G*dt : Math.min(d.vy+G*0.15*dt,55); d.y+=d.vy*dt; if(d.y>=FLOOR){d.y=FLOOR; d.vy=0; d.ground=true;} }
+  else body(d,dt);
+  if(cpu.charging && owner!==d) cpu.charging=false;
+  d.lean+=(((cpu.charging&&cpu.fade)?0.25:0)-d.lean)*Math.min(1,dt*12);
+}
+function remoteRelease(pw,fade,auto){
+  if(!(owner===d && ball.state==="held" && cpu.charging)) return;
+  const z=zoneFor(d.x,RL), range=fade?z.f:z.n, h=handPos(d,-1,true);
+  const make=!auto && !z.behind && pw>=range[0] && pw<=range[1];
+  // misses mirror the host's: just early lands on the front of the rim, just late on the back
+  const tx=z.behind?RL.x:(auto?RL.x-80:(make?RL.x:(pw<range[0]?RL.x+(20+(range[0]-pw)*1.5):RL.x-Math.min(15,11.8+Math.random()*2.6+(pw-range[1])*0.4))));
+  const sp=shotPath(h.x,h.y,tx,RL.y);
+  const missType=z.behind?"behind":(auto?"auto":(pw<range[0]?(pw<range[0]-25?"air":"short"):"long"));
+  Object.assign(ball,{state:"flight",x0:h.x,y0:h.y,x:h.x,y:h.y,vx:sp.vx,vy:sp.vy,T:sp.T,t:0,make,pts:z.pts,timer:0,
+    shooter:d,missType,dunk:false,wind:false,lucky:false,live:false,saveTried:false,fade:!!fade,far:z===ZONES.far});
+  owner=null; cpu.charging=false; cpu.fade=false;
+  lastShot=NAME.d+" shot from "+z.name.toLowerCase()+(fade?" with a fade-away":"");
+}
+function remoteDunk(){
+  if(!(owner===d && ball.state==="held" && d.ground && !cdunk.on && inKeyL(d.x))) return;
+  Object.assign(cdunk,{on:true,t:0,x0:d.x,success:Math.random()<0.5,resolved:false,hang:0,wind:false,w0:0});
+  d.ground=false; d.vy=0; cpu.charging=false; p.jumped=false;
+  lastShot=NAME.d+" is going for the dunk!";
+}
+function remoteWindmill(){
+  if(cdunk.on && !cdunk.wind && !cdunk.resolved && cdunk.t<RISE*0.8){ cdunk.wind=true; cdunk.w0=cdunk.t; cdunk.success=Math.random()<WIND_MAKE; }
+}
+function remoteSteal(jx,jy){
+  if(TWO.stealCool>0 || !(owner===p && ball.state==="held" && !dunk.on)) return;
+  TWO.stealCool=STEAL_COOLDOWN; cpuSwipe=0.3;
+  const toward=Math.sign(p.x-d.x)||-1, diagonal=jy>0.45 && jx*toward>0.3;
+  if(!diagonal){ TWO.ev.push(["sm","Pull the joystick down towards him!"]); return; }
+  if(Math.abs(d.x-p.x)>STEAL_REACH){ TWO.ev.push(["sm","Too far away!"]); return; }
+  const chance=(charge.on||!p.ground)?0:SKILL_BASE.stealChance;
+  if(Math.random()<chance){
+    play("swipe"); play("squeak"); play("gasp");
+    owner=d; ball.state="held"; ball.live=false; charge.on=false; needRelease=true;
+    say(pick("steal"),NAME.d+" stole it from "+NAME.p+"!",C.warn);
+    setMood(d,"happy"); setMood(p,"shock"); celebrateFor(d);
+    lastShot="Steal by "+NAME.d;
+  } else { play("swipe"); TWO.ev.push(["sm",pick("stealMiss")]); }
+}
+// everything the guest sends is checked before it's used
+function onTwoMessage(m){
+  if(isHost()){
+    if(m.t==="in"){ TWO.rin.jx=num(m.jx,-1,1,0); TWO.rin.jy=num(m.jy,-1,1,0); return true; }
+    if(screen!=="play" && ["jp","cs","cf","rl","dk","wm","st"].includes(m.t)) return true;   // paused: controls are ignored
+    if(m.t==="jp"){ TWO.jumpReq=true; return true; }
+    if(m.t==="cs"){ if(owner===d && ball.state==="held" && !cdunk.on){ cpu.charging=true; cpu.fade=false; } return true; }
+    if(m.t==="cf"){ cpu.fade=!!m.v; return true; }
+    if(m.t==="rl"){ remoteRelease(num(m.pw,0,100,0),!!m.fade,!!m.auto); return true; }
+    if(m.t==="dk"){ remoteDunk(); return true; }
+    if(m.t==="wm"){ remoteWindmill(); return true; }
+    if(m.t==="st"){ remoteSteal(num(m.jx,-1,1,0),num(m.jy,-1,1,0)); return true; }
+  }
+  if(isGuest()){
+    if(m.t==="s"){ onSnapshot(m); return true; }
+    if(m.t==="end"){ guestEnd(m); return true; }
+  }
+  if(m.t==="start" && LINK.role==="guest" && !isGuest()){
+    const s={arena:num(m.arena,0,ARENAS.length-1,0)|0, pBoy:BOYS[m.pBoy]?m.pBoy:"zackie", dBoy:BOYS[m.dBoy]?m.dBoy:"keelan",
+      pKit:okKit(m.pKit), dKit:okKit(m.dKit), pSkin:okSkin(m.pSkin), dSkin:okSkin(m.dSkin)};
+    beginMatch("guest",s); return true;
+  }
+  if(m.t==="start" && isGuest() && TWO.ended){ TWO.on=false; return onTwoMessage(m); }   // a rematch
+  if(m.t==="pz" && TWO.on){ TWO.paused=true; TWO.waiting=false; TWO.pausedBy=m.by==="d"?NAME.d:NAME.p; if(screen==="play") screen="pause"; return true; }
+  if(m.t==="resume" && TWO.on){ TWO.paused=false; if(screen==="pause") screen="play"; needRelease=true; return true; }
+  if(m.t==="leave" && TWO.on){ twoQuit((isHost()?NAME.d:NAME.p)+" left the match"); return true; }
+  return false;
+}
+// --- the host sends the state about 20 times a second ---
+function twoHostTick(dt){
+  TWO.sendT-=dt; if(TWO.sendT>0) return; TWO.sendT=0.05;
+  if(screen!=="play" && !TWO.ev.length) return;
+  const E=e=>[n1(e.x),n1(e.y),e.face||0,n1(e.lean||0),e.ground?1:0,e.dbl?1:0];
+  const DK=k=>k.on?[1,n1(k.t),k.wind?1:0,k.resolved?1:0,n1(k.hang),n1(k.w0||0)]:0;
+  const st={"held":1,"flight":2,"free":3,"made":4,"drop":5,"tip":6}[ball.state]||0;
+  netSend({t:"s",q:++TWO.seq,p:E(p),d:E(d),b:[n1(ball.x),n1(ball.y),n1(ball.rot||0),st],o:owner===p?1:owner===d?2:0,
+    sc:[stats.score,stats.cpu],ch:[charge.on?1:0,charge.fade?1:0],cc:[cpu.charging?1:0,cpu.fade?1:0],
+    dk:DK(dunk),cdk:DK(cdunk),tp:[tip.on?1:0,n1(tip.t),tip.tossed?1:0],sh:n1(shakeT),md:[moods.p.m,moods.d.m],
+    ft:ball.shooter===d?2:1,ev:TWO.ev.splice(0,20)});
+}
+// --- the guest: draw what the host sends, smoothly ---
+function onSnapshot(m){
+  if(!Array.isArray(m.p)||!Array.isArray(m.d)||!Array.isArray(m.b)) return;
+  m.r=performance.now(); TWO.snaps.push(m); if(TWO.snaps.length>12) TWO.snaps.shift();
+  TWO.last=m; TWO.waiting=false;
+  for(const ev of (Array.isArray(m.ev)?m.ev:[])) guestEvent(ev);
+}
+const STATES=["held","held","flight","free","made","drop","tip"];
+function guestEvent(ev){
+  if(!Array.isArray(ev)) return;
+  const k=ev[0];
+  if(k==="s" && typeof ev[1]==="string" && SFX[ev[1]]){
+    let name=ev[1], arg=ev[2];
+    if(name==="dribble") return;                                  // the guest makes its own dribble sounds
+    if(name==="groan") return;                                     // the host missing isn't a sad moment for the guest
+    if(name==="gasp"){ name="cheer"; arg=0.75; }                   // the guest's own block or steal: a cheer
+    play(name,typeof arg==="number"||typeof arg==="boolean"?arg:undefined);
+  } else if(k==="m" && typeof ev[1]==="string"){
+    // the host's commentary; lines written to the host ("You ...") are left off
+    const sub=typeof ev[2]==="string" && !/\b(you|your)\b/i.test(ev[2]) ? ev[2] : "";
+    msg={text:ev[1].slice(0,60),sub:sub.slice(0,80),t:1.9,color:typeof ev[3]==="string"?ev[3]:C.ink};
+  } else if(k==="c" && (ev[1]==="p"||ev[1]==="d")){ celebrate={who:ev[1],t:num(ev[2],0.5,4,2.2),T:num(ev[2],0.5,4,2.2)}; }
+  else if(k==="n"){ netKick(ev[1]?1:0,num(ev[2],0,12,3),num(ev[3],-3,3,0)); }
+  else if(k==="b"){ TWO.mute=true; startBoardFx(ev[1]==="L"?"L":"R",!!ev[2]); TWO.mute=false; }
+  else if(k==="k"){ startCrackFx(); }
+  else if(k==="j"){ const fx={t:0.45,x:num(ev[2],0,W,0),y:num(ev[3],0,H,0)}; if(ev[1]==="d") cpuFx=fx; else dblFx=fx; }
+  else if(k==="sm" && typeof ev[1]==="string"){ stealMsg={text:ev[1].slice(0,40),t:1.1}; }
+}
+function lerpE(e,a,b,u){
+  e.x=a[0]+(b[0]-a[0])*u; e.y=a[1]+(b[1]-a[1])*u; e.face=b[2]||e.face; e.lean=a[3]+(b[3]-a[3])*u; e.ground=!!b[4]; e.dbl=!!b[5];
+}
+function guestUpdate(dt){
+  const S=TWO.last;
+  // local timers
+  if(msg.t>0) msg.t-=dt; if(celebrate.t>0) celebrate.t-=dt; if(dblFx.t>0) dblFx.t-=dt; if(cpuFx.t>0) cpuFx.t-=dt;
+  if(stealMsg.t>0) stealMsg.t-=dt; if(TWO.gc.shown>0) TWO.gc.shown-=dt; if(tip.fade>0) tip.fade-=dt; if(cpuSwipe>0) cpuSwipe-=dt;
+  updateNets(dt); updateFx(dt);
+  if(!S || screen!=="play"){ return; }
+  // where things were 110 ms ago, smoothly between the two snapshots around that time
+  const rt=performance.now()-110; let a=S,b=S,u=1;
+  for(let i=TWO.snaps.length-1;i>0;i--){ if(TWO.snaps[i-1].r<=rt){ a=TWO.snaps[i-1]; b=TWO.snaps[i]; u=clamp((rt-a.r)/Math.max(1,b.r-a.r),0,1); break; } }
+  lerpE(p,a.p,b.p,u); const dx=d.x; lerpE(d,a.d,b.d,u);
+  owner=S.o===1?p:S.o===2?d:null; ball.state=STATES[S.b[3]]||"free";
+  ball.shooter=S.ft===2?d:p;
+  stats.score=S.sc[0]|0; stats.cpu=S.sc[1]|0;
+  charge.on=!!S.ch[0]; charge.fade=!!S.ch[1];
+  const setDK=(k,v)=>{ if(v){k.on=true; k.t=v[1]; k.wind=!!v[2]; k.resolved=!!v[3]; k.hang=v[4]; k.w0=v[5];} else k.on=false; };
+  setDK(dunk,S.dk); setDK(cdunk,S.cdk);
+  tip.on=!!S.tp[0]; tip.t=S.tp[1]; tip.tossed=!!S.tp[2]; shakeT=S.sh||0;
+  if(Array.isArray(S.md)){ moods.p.m=S.md[0]; moods.d.m=S.md[1]; }
+  // my own player moves as soon as I push the joystick; the host's position pulls it back if they drift apart
+  const jx=clamp(touchJoy||keyJoy,-1,1), jy=clamp(touchJoyY||keyJoyY,-1,1);
+  const serverX=d.x;
+  if(tip.on||cdunk.on||TWO.predX===null) TWO.predX=serverX;
+  else {
+    TWO.predX=clamp(TWO.predX+jx*(TWO.gc.on?70:170)*dt,24,812);
+    const err=serverX-TWO.predX;
+    if(Math.abs(err)>70) TWO.predX+=err*0.3; else if(Math.abs(jx)<0.2) TWO.predX+=err*Math.min(1,dt*4);
+  }
+  d.x=TWO.predX;
+  // the ball: in my hands it follows my player straight away
+  if(owner===d && ball.state==="held" && !cdunk.on){ const h=TWO.gc.on?handPos(d,-1,true):dribblePos(d,d.face||-1,dt); ball.x=h.x; ball.y=h.y; }
+  else { ball.x=a.b[0]+(b.b[0]-a.b[0])*u; ball.y=a.b[1]+(b.b[1]-a.b[1])*u; }
+  ball.rot=S.b[2];
+  cpu.charging=TWO.gc.on || !!S.cc[0]; cpu.fade=TWO.gc.on?TWO.gc.fade:!!S.cc[1];
+  d.lean=(cpu.charging&&cpu.fade)?0.25:d.lean;
+  trackRun(dt);
+  guestControls(dt,jx,jy);
+}
+// the guest's buttons: shooting, dunks, windmills, steals and jumps all go to the host
+function guestControls(dt,jx,jy){
+  const now=performance.now();
+  if(now-TWO.lastIn>45 || Math.abs(jx-TWO.rin.jx)>0.3 || Math.abs(jy-TWO.rin.jy)>0.3){ netSend({t:"in",jx:n1(jx),jy:n1(jy)}); TWO.lastIn=now; TWO.rin={jx,jy}; }
+  if(jumpQueued){ jumpQueued=false; netSend({t:"jp"}); }
+  const shootDown=shootKey||shootTouch, pressed=shootDown && !TWO.prevShoot; TWO.prevShoot=shootDown;
+  if(!shootDown) TWO.needUp=false;
+  const gc=TWO.gc, mine=owner===d && ball.state==="held";
+  if(cdunk.on && jy<-0.5 && !TWO.sentWind){ TWO.sentWind=true; netSend({t:"wm"}); }
+  if(!cdunk.on) TWO.sentWind=false;
+  if(owner===p && pressed){ netSend({t:"st",jx:n1(jx),jy:n1(jy)}); cpuSwipe=0.3; }
+  if(mine && !cdunk.on && !gc.on && shootDown && !TWO.needUp){
+    if(d.ground && inKeyL(d.x)){ netSend({t:"dk"}); TWO.needUp=true; }
+    else { Object.assign(gc,{on:true,power:0,fade:false,sentFade:false,zone:zoneFor(d.x,RL)}); netSend({t:"cs"}); }
+  }
+  if(gc.on){
+    if(!mine){ gc.on=false; return; }   // lost the ball (stolen) while powering up
+    const z=zoneFor(d.x,RL), before=gc.power; gc.zone=z;
+    gc.power+=dt/(z.fill||FILL)*100;
+    gc.fade=jx>0.35;   // pull away from the hoop (to the right) for a fade-away
+    if(gc.fade!==gc.sentFade){ gc.sentFade=gc.fade; netSend({t:"cf",v:gc.fade?1:0}); }
+    const range=gc.fade?z.f:z.n; if(before<range[0] && gc.power>=range[0]) play("tick");
+    const auto=gc.power>=100;
+    if(!shootDown || auto){
+      if(auto) gc.power=100;
+      netSend({t:"rl",pw:Math.round(gc.power*10)/10,fade:gc.fade?1:0,auto:auto?1:0});
+      gc.lastPower=gc.power; gc.range=range; gc.shown=1.2; gc.on=false; TWO.needUp=true;
+      lastShot=z.behind?"No shot from behind the basket: get in front of it":auto?"Held too long: the ball flew off at 100":"Let go at "+Math.round(gc.power)+" · needed "+range[0]+"–"+range[1]+(gc.fade?" (fade-away)":"");
+    }
+  }
+}
+// --- end of the match, pausing, leaving ---
+function twoHostEnd(){
+  const youWin=stats.score>=WIN; overWinner=youWin?"p":"d";
+  recordH2H(TWO.pBoy,youWin); netSend({t:"end",w:overWinner,sc:[stats.score,stats.cpu]}); TWO.ended=true; screen="over";
+}
+function guestEnd(m){
+  overWinner=m.w==="d"?"d":"p"; if(Array.isArray(m.sc)){stats.score=m.sc[0]|0; stats.cpu=m.sc[1]|0;}
+  recordH2H(TWO.dBoy,overWinner==="d"); TWO.ended=true; screen="over";
+}
+function recordH2H(boy,won){ if(TWO.h2hDone) return; TWO.h2hDone=true; const r=h2h[boy]||(h2h[boy]={w:0,l:0}); if(won) r.w++; else r.l++; saveGame(); }
+function twoPause(){ if(!TWO.on||TWO.ended) return; TWO.paused=true; TWO.pausedBy=isGuest()?NAME.d:NAME.p; screen="pause"; netSend({t:"pz",by:isGuest()?"d":"p"}); }
+function twoResume(){ TWO.paused=false; screen="play"; needRelease=true; TWO.needUp=true; netSend({t:"resume"}); }
+function twoQuit(note){
+  netSend({t:"leave"}); TWO.on=false; TWO.role=null; mode="vs";
+  applyLooks(); screen="online"; LINK.note=note||""; if(LINK.ws && LINK.peer) LINK.stage="connected";
+}
+// the other phone dropped out mid-match: pause and wait for it
+function twoPeerLeft(){ if(TWO.on && !TWO.ended){ TWO.waiting=true; TWO.paused=true; TWO.pausedBy=""; if(screen==="play") screen="pause"; } }
+function twoPeerBack(){ if(TWO.on && TWO.waiting){ TWO.waiting=false; netSend({t:"pz",by:isGuest()?"d":"p"}); } }   // back: both phones show RESUME
+function drawTwoPause(){
+  ui=[]; shade(0.75);
+  bigTitle(TWO.waiting?"WAITING…":"PAUSED",W/2,92,40);
+  const who=isGuest()?NAME.p:NAME.d;
+  text(TWO.waiting?"The other phone lost its connection. Waiting for "+who+" to come back…":(TWO.pausedBy?"Paused by "+TWO.pausedBy:"Paused"),W/2,134,BODY(14,900),C.ink,"center");
+  const bx=W/2-150;
+  if(!TWO.waiting) button(bx,160,300,50,"RESUME",{fill:"#2F6FE4"},twoResume);
+  button(bx,220,300,44,"LEAVE MATCH",{outline:"rgba(255,255,255,0.3)"},()=>twoQuit(""));
+  button(bx,274,146,40,SND.on?"SOUND: ON":"SOUND: OFF",{outline:"rgba(255,255,255,0.3)",size:14},toggleSound);
+  button(bx+154,274,146,40,SND.crowd?"CROWD: ON":"CROWD: OFF",{outline:"rgba(255,255,255,0.3)",size:14,disabled:!SND.on},toggleCrowd);
+}
+function drawTwoOver(){
+  ui=[]; shade(0.84);
+  const myBoy=isGuest()?TWO.dBoy:TWO.pBoy, iWon=(overWinner==="p")===!isGuest(), winName=overWinner==="p"?NAME.p:NAME.d;
+  faceBadge(overWinner==="p"?LOOK.p:LOOK.d,180,186,112,overWinner==="p"?C.p1:C.p2);
+  let size=40; ctx.font=DISP(size); const head=winName.toUpperCase()+" WINS!";
+  while(size>24 && ctx.measureText(head).width>470){size-=2; ctx.font=DISP(size);}
+  bigTitle(head,330,62,size,"left");
+  text(NAME.p+"  "+stats.score+"  –  "+stats.cpu+"  "+NAME.d,332,104,BODY(20,900),C.ink);
+  text("2 PLAYER · "+ARENAS[TWO.arena].name.toUpperCase(),332,140,BODY(12,900),C.muted);
+  const r=h2h[myBoy]||{w:0,l:0};
+  ctx.fillStyle="rgba(46,56,102,0.9)"; rr(332,166,460,96,14); ctx.fill();
+  text("HEAD-TO-HEAD",348,188,BODY(12,900),C.muted);
+  text(BOYS[myBoy].name+": "+r.w+(r.w===1?" win":" wins")+" · "+r.l+(r.l===1?" loss":" losses"),348,218,DISP(18),iWon?C.green:C.ink);
+  text(iWon?"Nice one!":"Get him next time!",348,246,BODY(13,900),C.ink);
+  if(isHost()) button(332,300,220,50,"REMATCH",{fill:"#F26B1D",ink:C.navy,sub:"New random arena",disabled:!(LINK.ws&&LINK.peer)},()=>{TWO.on=false; twoStartAsHost();});
+  else text("Waiting for "+NAME.p+" to start a rematch…",332,325,BODY(14,900),C.ink);
+  button(564,300,160,50,"LEAVE",{outline:"rgba(255,255,255,0.3)"},()=>twoQuit(""));
+}
+// the guest's power bar (its own, timed on its own phone)
+function drawGuestMeter(){
+  const gc=TWO.gc; if(!(gc.on||gc.shown>0)) return;
+  const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?(fade?z.f:z.n):(gc.range||z.n), pw=gc.on?gc.power:gc.lastPower;
+  const x=W-170,y=86,w=30,h=180;
+  text("POWER",x,y-12,BODY(12,900),C.ink);
+  ctx.fillStyle=C.panel; rr(x,y,w,h,8); ctx.fill();
+  ctx.save(); rr(x,y,w,h,8); ctx.clip();
+  ctx.fillStyle=C.ball; ctx.fillRect(x,y+h*(1-pw/100),w,h*pw/100);
+  const by=y+h*(1-range[1]/100), bh=h*(range[1]-range[0])/100;
+  if(!z.behind){ ctx.fillStyle="rgba(61,220,151,0.8)"; ctx.fillRect(x,by,w,bh); ctx.fillStyle=C.ink; ctx.fillRect(x,by-1.5,w,3); ctx.fillRect(x,by+bh-1.5,w,3); }
+  ctx.fillStyle=C.red; ctx.fillRect(x,y,w,4); ctx.restore();
+  text("100",x-8,y+2,BODY(11,900),"#FF8A8A","right");
+  if(!z.behind){ text(String(range[1]),x-8,by-3,BODY(11,900),C.green,"right"); text(String(range[0]),x-8,by+bh+5,BODY(11,900),C.green,"right"); }
+  else text("NO SHOT",x-8,y+h/2,BODY(12,900),C.warn,"right");
+  text(Math.round(pw)+"%",x,y+h+16,DISP(16),(pw>=range[0]&&pw<=range[1])?C.green:C.ink);
+}
+// the guest's on-screen buttons (the same layout; steal when the host has the ball)
+function drawGuestControls(){
+  ctx.fillStyle="rgba(27,35,64,0.8)"; ctx.beginPath(); ctx.arc(JOY.x,JOY.y,JOY.r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,0.5)"; ctx.lineWidth=3; ctx.stroke();
+  const jx=JOY.x+clamp(touchJoy||keyJoy,-1,1)*26, jy=JOY.y+clamp(touchJoyY||keyJoyY,-1,1)*20;
+  ctx.fillStyle=C.chalk; ctx.beginPath(); ctx.arc(jx,jy,24,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=C.ink; ctx.lineWidth=3; ctx.stroke();
+  const defending=owner===p||(ball.state==="flight"&&ball.shooter===p);
+  ctx.fillStyle=d.ground?"rgba(46,56,102,0.9)":"rgba(61,220,151,0.5)"; ctx.beginPath(); ctx.arc(JUMP.x,JUMP.y,JUMP.r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle=defending?C.warn:"rgba(255,255,255,0.5)"; ctx.lineWidth=3; ctx.stroke();
+  line(JUMP.x,JUMP.y+2,JUMP.x,JUMP.y-14,C.ink,3);
+  ctx.beginPath(); ctx.moveTo(JUMP.x-7,JUMP.y-8); ctx.lineTo(JUMP.x,JUMP.y-15); ctx.lineTo(JUMP.x+7,JUMP.y-8); ctx.stroke();
+  text(defending?"BLOCK":"JUMP",JUMP.x,JUMP.y+14,BODY(11,900),C.ink,"center");
+  const down=shootKey||shootTouch;
+  if(owner===p){
+    const near=Math.abs(d.x-p.x)<=STEAL_REACH;
+    if(near){const pulse=4+Math.sin(performance.now()/120)*3; ctx.strokeStyle=C.green; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,SHOOT.r+pulse,0,Math.PI*2); ctx.stroke();}
+    ctx.fillStyle="#14A3B8"; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,down?39:SHOOT.r,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=down?C.warn:C.ink; ctx.lineWidth=3; ctx.stroke();
+    text("STEAL",SHOOT.x,SHOOT.y-4,DISP(14),C.ink,"center"); text(near?"in reach!":"get closer",SHOOT.x,SHOOT.y+14,BODY(10,900),C.ink,"center");
+    return;
+  }
+  const can=owner===d && ball.state==="held" && !cdunk.on, dunkReady=can && !TWO.gc.on && d.ground && inKeyL(d.x);
+  ctx.globalAlpha=can?1:0.4;
+  if(dunkReady){ ctx.fillStyle=C.info; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,SHOOT.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=C.ink; ctx.lineWidth=3; ctx.stroke(); text("DUNK!",SHOOT.x,SHOOT.y+1,DISP(15),C.ink,"center"); }
+  else { ctx.fillStyle=C.ball; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,down&&can?39:SHOOT.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=down?C.warn:C.seam; ctx.lineWidth=4; ctx.stroke(); text("SHOOT",SHOOT.x,SHOOT.y+1,DISP(14),C.navy,"center"); }
+  ctx.globalAlpha=1;
 }
 function drawTitle(){
   ui=[]; drawCourt(); drawNetLayer(false); drawNetLayer(true); shade(0.72);
@@ -2718,7 +3073,7 @@ function drawBall(){
     ctx.fillStyle="rgba(0,0,0,"+(0.32*k).toFixed(3)+")";
     ctx.beginPath(); ctx.ellipse(x,FLOOR+1,R*1.1*k+2,2.6*k,0,0,Math.PI*2); ctx.fill();
   }
-  drawBallAt(x,y,R,ballOf(human),ball.rot||0);
+  drawBallAt(x,y,R,TWO.on?ballList()[TWO.arena+1]:ballOf(human),ball.rot||0);   // 2 Player: the arena's own ball
 }
 // the balls: the classic orange one, then one per arena in that arena's two colours
 let BALLS=null;
@@ -2775,6 +3130,7 @@ function drawPreview(){
   for(let i=1;i<=18;i++){const t=sp.T*i/18;ctx.beginPath();ctx.arc(h.x+sp.vx*t,h.y+sp.vy*t+0.5*GB*t*t,2.6,0,Math.PI*2);ctx.fill();}
 }
 function drawMeter(){
+  if(isGuest()){ drawGuestMeter(); return; }
   if(!(charge.on||charge.shown>0)) return;
   const z=charge.zone||zoneFor(p.x,RR), fade=charge.on?charge.fade:false;
   const range=charge.on?pRange(z,fade):(charge.range||pRange(z,false));
@@ -2833,7 +3189,11 @@ function drawHUD(){
   if(cpuOn) pill(238,166,LOOK.d,C.p2,NAME.d,stats.cpu);
   const px=cpuOn?412:238, pw=W-16-px, cx=px+pw/2;
   ctx.fillStyle="rgba(46,56,102,0.95)"; rr(px,14,pw,40,12); ctx.fill();
-  if(tip.on){
+  if(TWO.on && !tip.on){
+    const mine=isGuest()?d:p, theirs=isGuest()?p:d, def=owner===theirs||(ball.state==="flight"&&ball.shooter===theirs);
+    text("2 PLAYER · "+(isGuest()?"YOU'RE ON THE RIGHT":"YOU'RE ON THE LEFT")+" · FIRST TO 21",cx,26,BODY(11,900),def?C.warn:C.muted,"center");
+    text(def?"JUMP to block · joystick down towards him + STEAL":(owner===mine?"Score on the "+(isGuest()?"LEFT":"RIGHT")+" hoop":"Loose ball? Run to it"),cx,42,BODY(12,900),C.ink,"center");
+  } else if(tip.on){
     text("JUMP BALL",cx,26,BODY(11,900),C.warn,"center");
     text("The ball drops after the countdown: tap JUMP to win it",cx,42,BODY(13,900),C.ink,"center");
   } else if(cpuOn && playerDefending()){
@@ -2855,6 +3215,7 @@ function drawHUD(){
   text(lastShot,W/2-20,373,BODY(13,800),C.ink,"center");
 }
 function drawControls(){
+  if(isGuest()){ drawGuestControls(); return; }
   ctx.fillStyle="rgba(27,35,64,0.8)"; ctx.beginPath(); ctx.arc(JOY.x,JOY.y,JOY.r,0,Math.PI*2); ctx.fill();
   ctx.strokeStyle="rgba(255,255,255,0.5)"; ctx.lineWidth=3; ctx.stroke();
   ctx.strokeStyle=C.ink; ctx.lineWidth=3;
@@ -2982,8 +3343,8 @@ function draw(){
   else if(screen==="trophies") drawTrophies();
   else {
     drawGame();
-    if(screen==="pause") drawPause();
-    else if(screen==="over") drawOver();
+    if(screen==="pause") (TWO.on?drawTwoPause:drawPause)();
+    else if(screen==="over") (TWO.on?drawTwoOver:drawOver)();
   }
   ctx.restore();
 }
@@ -3004,7 +3365,8 @@ cv.addEventListener("pointerdown",e=>{
     e.preventDefault(); return;
   }
   if(q.x>=PAUSE_BTN.x-6&&q.x<=PAUSE_BTN.x+PAUSE_BTN.w+6&&q.y>=PAUSE_BTN.y-6&&q.y<=PAUSE_BTN.y+PAUSE_BTN.h+6){
-    screen="pause"; touchJoy=0; shootTouch=false; roles.clear(); e.preventDefault(); return;
+    if(TWO.on) twoPause(); else screen="pause";
+    touchJoy=0; shootTouch=false; roles.clear(); e.preventDefault(); return;
   }
   if(q.x>=SOUND_BTN.x-6&&q.x<=SOUND_BTN.x+SOUND_BTN.w+6&&q.y>=SOUND_BTN.y-4&&q.y<=SOUND_BTN.y+SOUND_BTN.h+6){
     toggleSound(); e.preventDefault(); return;
@@ -3046,7 +3408,10 @@ cv.addEventListener("keydown",e=>{
   if(screen==="title" && (k==="ArrowUp"||k==="ArrowDown")){ scrollMap(k==="ArrowUp"?-60:60); return; }
   if(k==="m"||k==="M"){ toggleSound(); return; }
   if(k==="c"||k==="C"){ if(SND.on) toggleCrowd(); return; }
-  if(k==="Escape"||k==="p"){ if(screen==="play") screen="pause"; else if(screen==="pause") screen="play"; return; }
+  if(k==="Escape"||k==="p"){
+    if(TWO.on){ if(screen==="play") twoPause(); else if(screen==="pause" && !TWO.waiting) twoResume(); return; }
+    if(screen==="play") screen="pause"; else if(screen==="pause") screen="play"; return; }
+  if(k==="Enter" && TWO.on){ if(screen==="pause" && !TWO.waiting) twoResume(); return; }
   if(k==="Enter"){
     if(screen==="title") openNextLevel(); else if(screen==="setup") tryStart();
     else if(screen==="over") startGame(); else if(screen==="pause") screen="play";
