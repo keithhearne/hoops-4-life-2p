@@ -1,6 +1,6 @@
 {
   // Hoops 4 Life 2P game-room server (Cloudflare Worker + one Durable Object per room)
-  "name": "hoops-4-life-2p-rooms",
+  "name": "hoops-4-life-2p",
   "main": "src/index.js",
   "compatibility_date": "2026-06-01",
   "observability": { "enabled": true },
@@ -10,7 +10,7 @@
   // SQLite-backed Durable Objects (the kind available on the Free plan)
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GameRoom"] }],
   "vars": {
-    // the only web pages allowed to use the rooms: the game's own site, plus localhost for testing
-    "ALLOWED_ORIGINS": "https://keithhearne.github.io,localhost"
+    // the only web pages allowed to use the rooms: the game's own site, Claude preview pages, and localhost for testing
+    "ALLOWED_ORIGINS": "https://keithhearne.github.io,*.claudeusercontent.com,https://claude.ai,localhost"
   }
 }
