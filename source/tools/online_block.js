@@ -74,7 +74,7 @@ function onNetMessage(raw){
 let codeKeys=[];
 function drawOnline(){
   ui=[]; drawCourt(); shade(0.84);
-  bigTitle("TWO PHONES",W/2,30,28);
+  bigTitle("2 PLAYER MODE",W/2,30,28);
   const box=(x,y,w,h)=>{ctx.fillStyle="rgba(16,21,43,0.95)"; rr(x,y,w,h,18); ctx.fill(); ctx.strokeStyle="rgba(255,255,255,0.15)"; ctx.lineWidth=2; ctx.stroke();};
   const st=LINK.stage;
   if(st==="menu"){

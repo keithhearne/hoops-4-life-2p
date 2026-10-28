@@ -2292,7 +2292,7 @@ function onNetMessage(raw){
 let codeKeys=[];
 function drawOnline(){
   ui=[]; drawCourt(); shade(0.84);
-  bigTitle("TWO PHONES",W/2,30,28);
+  bigTitle("2 PLAYER MODE",W/2,30,28);
   const box=(x,y,w,h)=>{ctx.fillStyle="rgba(16,21,43,0.95)"; rr(x,y,w,h,18); ctx.fill(); ctx.strokeStyle="rgba(255,255,255,0.15)"; ctx.lineWidth=2; ctx.stroke();};
   const st=LINK.stage;
   if(st==="menu"){
@@ -2374,9 +2374,9 @@ function drawTitle(){
   button(324,66,176,44,"TROPHIES",{fill:"#14A3B8",sub:"Spend medals & crowns"},()=>{screen="trophies"; tro.stage="shop"; tro.msg.t=0;});
   drawPrizes(human,412,118);
   text(BOYS.zackie.name+" vs "+BOYS.keelan.name,cx,74,BODY(15,900),C.ink,"center");
-  button(bx,92,bw,50,"1 v 1 vs COMPUTER",{fill:"#2F6FE4",sub:BOYS[human].name+" · "+(progress[human]>=LEVELS?"all levels beaten!":levelName(progress[human]))},openNextLevel);
+  button(bx,92,bw,50,"1-ON-1 vs COMPUTER",{fill:"#2F6FE4",sub:BOYS[human].name+" · "+(progress[human]>=LEVELS?"all levels beaten!":levelName(progress[human]))},openNextLevel);
   button(bx,150,bw,50,"SHOOTING PRACTICE",{fill:"#F26B1D",ink:C.navy,sub:"No defender"},()=>openSetup("practice"));
-  button(bx,208,bw,50,"TWO PHONES",{fill:"#1FA35B",sub:"Host or join a game · play each other"},openOnline);
+  button(bx,208,bw,50,"2 PLAYER MODE",{fill:"#1FA35B",sub:"Host or join a game · play each other"},openOnline);
   const at=b=>progress[b]>=LEVELS?"done!":"L"+(Math.floor(progress[b]/STOPS)+1)+" · G"+(progress[b]%STOPS+1);
   text("WHERE EACH BOY IS UP TO",cx,326,BODY(11,900),C.muted,"center");
   text(BOYS.zackie.name+"  "+at("zackie")+"     "+BOYS.keelan.name+"  "+at("keelan"),cx,346,BODY(15,900),C.ink,"center");
