@@ -8,8 +8,13 @@ const TWO={on:false,role:null,arena:0,pBoy:"zackie",dBoy:"keelan",
   rin:{jx:0,jy:0}, jumpReq:false, stealCool:0, ev:[], sendT:0, seq:0,
   snaps:[], last:null, paused:false, pausedBy:"", waiting:false, ended:false, winner:null, mute:false,
   gc:{on:false,power:0,fade:false,shown:0,lastPower:0,range:null,zone:null,sentFade:false,auto:false},
-  predX:null, lastIn:0, lastJy:0, sentWind:false, needUp:false, prevShoot:false, h2hDone:false};
+  predX:null, jxLast:0, lastIn:0, lastJy:0, sentWind:false, needUp:false, prevShoot:false, h2hDone:false};
 let h2h={zackie:{w:0,l:0},keelan:{w:0,l:0}};   // head-to-head record of each boy in 2 Player matches
+let twoAb=true;   // playing as a won boss in 2 Player: use his abilities (true) or just his look (false)
+let DS=null, pStunCool=0;     // the right player's boss abilities in 2 Player (PS is the left player's)
+const dAb=()=>BOSS?BS:DS;   // the right player's abilities: a computer boss's, or a 2 Player boss look's
+const abOf=(skin,on)=>{skin=okSkin(skin); return on&&skin?playerStats(+skin.slice(4)):null;};
+function toggleTwoAb(){ twoAb=!twoAb; saveGame(); sendIntro(); }
 const isHost=()=>TWO.on&&TWO.role==="host", isGuest=()=>TWO.on&&TWO.role==="guest";
 const meE=()=>isGuest()?d:p, foeE=()=>isGuest()?p:d;
 const n1=v=>Math.round(v*10)/10;
@@ -29,21 +34,23 @@ function twoStartAsHost(){
   if(!LINK.other || !LINK.ws) return;
   const arena=Math.floor(Math.random()*ARENAS.length);
   const s={t:"start",arena,pBoy:human,pKit:okKit(kits[human]),pSkin:skinOf[human]||null,
-    dBoy:LINK.other.boy,dKit:okKit({main:LINK.other.main,trim:LINK.other.trim}),dSkin:LINK.other.skin||null};
+    dBoy:LINK.other.boy,dKit:okKit({main:LINK.other.main,trim:LINK.other.trim}),dSkin:LINK.other.skin||null,
+    pAb:!!(skinOf[human]&&twoAb), dAb:!!(LINK.other.skin&&LINK.other.ab)};
   netSend(s); beginMatch("host",s);
 }
 function beginMatch(role,s){
   TWO.on=true; TWO.role=role; TWO.arena=s.arena; TWO.pBoy=s.pBoy; TWO.dBoy=s.dBoy;
   TWO.ended=false; TWO.winner=null; TWO.paused=false; TWO.waiting=false; TWO.snaps=[]; TWO.last=null; TWO.ev=[];
-  TWO.gc.on=false; TWO.gc.shown=0; TWO.predX=null; TWO.h2hDone=false; TWO.rin={jx:0,jy:0}; TWO.jumpReq=false;
-  BOSS=null; BS=null; PS=null; mode="2p";
+  TWO.gc.on=false; TWO.gc.shown=0; TWO.predX=null; TWO.h2hDone=false; TWO.rin={jx:0,jy:0}; TWO.jumpReq=false; TWO.jxLast=0;
+  BOSS=null; BS=null; mode="2p";
+  PS=abOf(s.pSkin,s.pAb===true); DS=abOf(s.dSkin,s.dAb===true);   // boss abilities, if that player chose them
   LOOK.p=lookOf(s.pBoy,s.pSkin,s.pKit,1); LOOK.p.who="p";
   LOOK.d=lookOf(s.dBoy,s.dSkin,s.dKit,-1); LOOK.d.who="d";
   C.p1=MAINS[s.pKit.main]; C.p2=MAINS[s.dKit.main]; NAME.p=LOOK.p.name; NAME.d=LOOK.d.name;
   if(C.p1===C.p2) C.p2=mix(C.p2,"#000000",0.3);   // same jersey colour: darken one so the scoreboard tells them apart
   Object.assign(stats,{score:0,cpu:0,made:0,att:0,streak:0,best:0,threes:0,dunks:0,blk:0,stl:0});
   stealCool=0; stealSwipe=0; stealMsg.t=0; prevAction=true; boardFx.t=0; crackFx.t=0;
-  SKILL=Object.assign({},SKILL_BASE); WIN=21; resetBoss(); cpuOn=true;
+  SKILL=Object.assign({},SKILL_BASE); WIN=21; resetBoss(); pStunCool=0; cpuOn=true;
   pendingInbound=null; gameOverT=0; celebrate.t=0; charge.shown=0; dblFx.t=0; cpuFx.t=0;
   moods.p.m=moods.d.m="happy"; moods.p.t=moods.d.t=0;
   touchJoy=0; touchJoyY=0; shootTouch=false; shootKey=false; needRelease=true;
@@ -58,13 +65,25 @@ function remoteUpdate(dt){
   if(TWO.stealCool>0) TWO.stealCool-=dt;
   const jx=TWO.rin.jx;
   if(TWO.jumpReq){ TWO.jumpReq=false;
-    if(d.ground && !cdunk.on){ d.vy=-380; d.ground=false; d.dbl=false; d.jumped=true; play("squeak"); }
-    else if(!d.ground && !d.dbl && (owner===p||(ball.state==="flight"&&ball.shooter===p)) && Math.abs(d.vy)<APEX_VY*2.5){ d.vy=-380; d.dbl=true; cpuFx={t:0.45,x:d.x,y:d.y}; TWO.ev.push(["j","d",n1(d.x),n1(d.y)]); }
+    if(d.ground && !cdunk.on && dStun<=0){ d.vy=-380*(DS?DS.jump:1); d.ground=false; d.dbl=false; d.jumped=true; play("squeak"); }
+    else if(!d.ground && !d.dbl && (owner===p||(ball.state==="flight"&&ball.shooter===p)) && Math.abs(d.vy)<APEX_VY*2.5*(DS&&DS.has("dbl")?2.2:1)){ d.vy=-380*(DS?DS.jump:1); d.dbl=true; cpuFx={t:0.45,x:d.x,y:d.y}; TWO.ev.push(["j","d",n1(d.x),n1(d.y)]); }
     else if(!d.ground) d.dbl=true;
   }
   if(tip.on){ updateTip(dt); body(d,dt); return; }
   if(cdunk.on){ runDunk(cdunk,d,-1,RL,CPU_DUNK_X,dt); return; }
-  d.x=clamp(d.x+jx*(cpu.charging?70:170)*dt,24,812);
+  if(dStunCool>0) dStunCool-=dt;
+  if(pStunCool>0) pStunCool-=dt;
+  if(pStun>0) pStun-=dt;
+  if(dStun>0){ dStun-=dt; d.lean=Math.sin(performance.now()/45)*0.14; body(d,dt); return; }   // ankles broken: he stumbles
+  const glued=PS&&PS.glue&&owner===d&&ball.state==="held"&&p.ground&&p.x<d.x&&d.x-p.x<46&&jx<0;   // Glue Defender in his way
+  const spd=(cpu.charging?70:170)*(DS?DS.speed*(ball.state==="free"?1+DS.reb*1.5:1):1)*(glued?Math.max(0.25,1-PS.glue*2):1);
+  // Ankle Breaker: a sharp change of direction right in front of the defender can drop him
+  if(DS&&DS.ankle&&owner===d&&ball.state==="held"&&!cpu.charging&&!cdunk.on&&p.x<d.x&&d.x-p.x<90&&Math.abs(jx)>0.5){
+    if(TWO.jxLast*jx<0 && pStunCool<=0 && Math.random()<DS.ankle*2.2){
+      pStun=0.6+DS.ankle; pStunCool=3; say("ANKLES BROKEN!",NAME.d+" crossed "+NAME.p+" over!",C.info); play("squeak"); play("cheer",0.75); setMood(p,"shock"); setMood(d,"happy"); }
+  }
+  if(Math.abs(jx)>0.5) TWO.jxLast=jx;
+  d.x=clamp(d.x+jx*spd*dt,24,812);
   if(cpu.charging && !d.ground){ d.vy = d.vy<0 ? d.vy+G*dt : Math.min(d.vy+G*0.15*dt,55); d.y+=d.vy*dt; if(d.y>=FLOOR){d.y=FLOOR; d.vy=0; d.ground=true;} }
   else body(d,dt);
   if(cpu.charging && owner!==d) cpu.charging=false;
@@ -72,7 +91,7 @@ function remoteUpdate(dt){
 }
 function remoteRelease(pw,fade,auto){
   if(!(owner===d && ball.state==="held" && cpu.charging)) return;
-  const z=zoneFor(d.x,RL), range=fade?z.f:z.n, h=handPos(d,-1,true);
+  const z=zoneFor(d.x,RL), range=abRange(DS,z,fade), h=handPos(d,-1,true);
   const make=!auto && !z.behind && pw>=range[0] && pw<=range[1];
   // misses mirror the host's: just early lands on the front of the rim, just late on the back
   const tx=z.behind?RL.x:(auto?RL.x-80:(make?RL.x:(pw<range[0]?RL.x+(20+(range[0]-pw)*1.5):RL.x-Math.min(15,11.8+Math.random()*2.6+(pw-range[1])*0.4))));
@@ -85,20 +104,20 @@ function remoteRelease(pw,fade,auto){
 }
 function remoteDunk(){
   if(!(owner===d && ball.state==="held" && d.ground && !cdunk.on && inKeyL(d.x))) return;
-  Object.assign(cdunk,{on:true,t:0,x0:d.x,success:Math.random()<0.5,resolved:false,hang:0,wind:false,w0:0});
+  Object.assign(cdunk,{on:true,t:0,x0:d.x,success:Math.random()<dunkChanceOf(DS),resolved:false,hang:0,wind:false,w0:0});
   d.ground=false; d.vy=0; cpu.charging=false; p.jumped=false;
   lastShot=NAME.d+" is going for the dunk!";
 }
 function remoteWindmill(){
-  if(cdunk.on && !cdunk.wind && !cdunk.resolved && cdunk.t<RISE*0.8){ cdunk.wind=true; cdunk.w0=cdunk.t; cdunk.success=Math.random()<WIND_MAKE; }
+  if(cdunk.on && !cdunk.wind && !cdunk.resolved && cdunk.t<RISE*0.8){ cdunk.wind=true; cdunk.w0=cdunk.t; cdunk.success=Math.random()<windChanceOf(DS); }
 }
 function remoteSteal(jx,jy){
   if(TWO.stealCool>0 || !(owner===p && ball.state==="held" && !dunk.on)) return;
   TWO.stealCool=STEAL_COOLDOWN; cpuSwipe=0.3;
   const toward=Math.sign(p.x-d.x)||-1, diagonal=jy>0.45 && jx*toward>0.3;
   if(!diagonal){ TWO.ev.push(["sm","Pull the joystick down towards him!"]); return; }
-  if(Math.abs(d.x-p.x)>STEAL_REACH){ TWO.ev.push(["sm","Too far away!"]); return; }
-  const chance=(charge.on||!p.ground)?0:SKILL_BASE.stealChance;
+  if(Math.abs(d.x-p.x)>STEAL_REACH*(DS?DS.arm:1)){ TWO.ev.push(["sm","Too far away!"]); return; }
+  const chance=(charge.on||!p.ground)?0:Math.min(0.9,SKILL_BASE.stealChance*(DS&&DS.pick?1+DS.pick*1.6:1));
   if(Math.random()<chance){
     play("swipe"); play("squeak"); play("gasp");
     owner=d; ball.state="held"; ball.live=false; charge.on=false; needRelease=true;
@@ -126,7 +145,7 @@ function onTwoMessage(m){
   }
   if(m.t==="start" && LINK.role==="guest" && !isGuest()){
     const s={arena:num(m.arena,0,ARENAS.length-1,0)|0, pBoy:BOYS[m.pBoy]?m.pBoy:"zackie", dBoy:BOYS[m.dBoy]?m.dBoy:"keelan",
-      pKit:okKit(m.pKit), dKit:okKit(m.dKit), pSkin:okSkin(m.pSkin), dSkin:okSkin(m.dSkin)};
+      pKit:okKit(m.pKit), dKit:okKit(m.dKit), pSkin:okSkin(m.pSkin), dSkin:okSkin(m.dSkin), pAb:m.pAb===true, dAb:m.dAb===true};
     beginMatch("guest",s); return true;
   }
   if(m.t==="start" && isGuest() && TWO.ended){ TWO.on=false; return onTwoMessage(m); }   // a rematch
@@ -202,7 +221,7 @@ function guestUpdate(dt){
   const serverX=d.x;
   if(tip.on||cdunk.on||TWO.predX===null) TWO.predX=serverX;
   else {
-    TWO.predX=clamp(TWO.predX+jx*(TWO.gc.on?70:170)*dt,24,812);
+    TWO.predX=clamp(TWO.predX+jx*(TWO.gc.on?70:170)*(DS?DS.speed*(ball.state==="free"?1+DS.reb*1.5:1):1)*dt,24,812);
     const err=serverX-TWO.predX;
     if(Math.abs(err)>70) TWO.predX+=err*0.3; else if(Math.abs(jx)<0.2) TWO.predX+=err*Math.min(1,dt*4);
   }
@@ -237,7 +256,7 @@ function guestControls(dt,jx,jy){
     gc.power+=dt/(z.fill||FILL)*100;
     gc.fade=jx>0.35;   // pull away from the hoop (to the right) for a fade-away
     if(gc.fade!==gc.sentFade){ gc.sentFade=gc.fade; netSend({t:"cf",v:gc.fade?1:0}); }
-    const range=gc.fade?z.f:z.n; if(before<range[0] && gc.power>=range[0]) play("tick");
+    const range=abRange(DS,z,gc.fade); if(before<range[0] && gc.power>=range[0]) play("tick");
     const auto=gc.power>=100;
     if(!shootDown || auto){
       if(auto) gc.power=100;
@@ -298,7 +317,7 @@ function drawTwoOver(){
 // the guest's power bar (its own, timed on its own phone)
 function drawGuestMeter(){
   const gc=TWO.gc; if(!(gc.on||gc.shown>0)) return;
-  const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?(fade?z.f:z.n):(gc.range||z.n), pw=gc.on?gc.power:gc.lastPower;
+  const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?abRange(DS,z,fade):(gc.range||abRange(DS,z,false)), pw=gc.on?gc.power:gc.lastPower;
   const x=W-170,y=86,w=30,h=180;
   text("POWER",x,y-12,BODY(12,900),C.ink);
   ctx.fillStyle=C.panel; rr(x,y,w,h,8); ctx.fill();
@@ -326,7 +345,7 @@ function drawGuestControls(){
   text(defending?"BLOCK":"JUMP",JUMP.x,JUMP.y+14,BODY(11,900),C.ink,"center");
   const down=shootKey||shootTouch;
   if(owner===p){
-    const near=Math.abs(d.x-p.x)<=STEAL_REACH;
+    const near=Math.abs(d.x-p.x)<=STEAL_REACH*(DS?DS.arm:1);
     if(near){const pulse=4+Math.sin(performance.now()/120)*3; ctx.strokeStyle=C.green; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,SHOOT.r+pulse,0,Math.PI*2); ctx.stroke();}
     ctx.fillStyle="#14A3B8"; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,down?39:SHOOT.r,0,Math.PI*2); ctx.fill();
     ctx.strokeStyle=down?C.warn:C.ink; ctx.lineWidth=3; ctx.stroke();

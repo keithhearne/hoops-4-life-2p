@@ -156,7 +156,7 @@ function zoneFor(x,rim){
   const xx=rim.dir>0?x:W-x; return xx>THREE?ZONES.inside:(xx>HALF?ZONES.mid:ZONES.far);
 }
 function rot(lx,ly,a,ox,oy){const c=Math.cos(a),s=Math.sin(a);return {x:ox+lx*c-ly*s,y:oy+lx*s+ly*c};}
-function handPos(e,dir,charging){const k=(e===d&&BOSS)?BS.size:((e===p&&PS)?PS.size:1); return rot((charging?dir*4:dir*14)*k, (charging?-74:-58)*k, e.lean, e.x, e.y);}
+function handPos(e,dir,charging){const k=(e===d&&dAb())?dAb().size:((e===p&&PS)?PS.size:1); return rot((charging?dir*4:dir*14)*k, (charging?-74:-58)*k, e.lean, e.x, e.y);}
 function shotPath(x0,y0,tx,ty){const T=0.75+Math.abs(tx-x0)/900;return {vx:(tx-x0)/T, vy:(ty-y0-0.5*GB*T*T)/T, T};}
 function targetFor(power,range,auto){
   if(auto) return RR.x+80;
@@ -179,7 +179,7 @@ function cpuDefending(){return owner===p || (ball.state==="flight"&&ball.shooter
 function playerDefending(){return owner===d || (ball.state==="flight"&&ball.shooter===d);}
 function cpuArmUp(){return cpuOn && cpuDefending() && (!d.ground || charge.on || dunk.on || ball.state==="flight");}
 function playerArmUp(){return playerDefending() && (!p.ground || cpu.charging || cdunk.on || ball.state==="flight");}
-function cpuHand(){const S=BOSS?BS.size:1, A=BOSS?BS.arm*(sig.on==="block"&&BOSS.sv.reach?1.3:1):1; return {x:d.x+20*A*(d.face||-1),y:d.y-84*S-(A-1)*30};}
+function cpuHand(){const DA=dAb(), S=DA?DA.size:1, A=DA?DA.arm*(BOSS&&sig.on==="block"&&BOSS.sv.reach?1.3:1):1; return {x:d.x+20*A*(d.face||-1),y:d.y-84*S-(A-1)*30};}
 function playerHand(){const S=PS?PS.size:1, A=PS?PS.arm:1; return {x:p.x+20*A*(p.face||1),y:p.y-84*S-(A-1)*30};}
 // Which way each player faces (1 = right, -1 = left).
 // Defending: face the ball handler, so from behind you turn and chase him, and once past him you face him.
@@ -844,7 +844,7 @@ function update(dt){
     }
   } else if(charge.on && owner!==p){charge.on=false;}
   p.lean+=(((charge.on&&charge.fade)?-0.25:0)-p.lean)*Math.min(1,dt*12);
-  if(BOSS && pStun>0) p.lean=Math.sin(performance.now()/45)*0.14;   // wobbly ankles
+  if((BOSS||TWO.on) && pStun>0) p.lean=Math.sin(performance.now()/45)*0.14;   // wobbly ankles
   if(charge.shown>0) charge.shown-=dt;
 
   // Ankle Breaker: change direction sharply right in front of him and he can fall for it
@@ -869,7 +869,7 @@ function update(dt){
       if(dunk.t<RISE) h=a;
       else {const u=Math.min(1,(dunk.t-RISE)/SLAM); h={x:a.x+(RR.x-a.x)*u, y:a.y+(RR.y-6-a.y)*u};}
     } else if(owner===d && cdunk.on){
-      const k=BOSS?BS.size:1, a={x:d.x-10*k,y:d.y-96*k};
+      const k=dAb()?dAb().size:1, a={x:d.x-10*k,y:d.y-96*k};
       if(cdunk.t<RISE) h=a;
       else {const u=Math.min(1,(cdunk.t-RISE)/SLAM); h={x:a.x+(RL.x-a.x)*u, y:a.y+(RL.y-6-a.y)*u};}
     } else {
@@ -898,11 +898,11 @@ function update(dt){
     if((early||saveZone) && ball.shooter===p && cpuArmUp()){
       const hd=cpuHand();
       const fadeK=(ball.fade&&PS&&PS.fade)?Math.max(0.35,1-PS.fade*1.3):1;
-      if(Math.hypot(ball.x-hd.x,ball.y-hd.y)<(BOSS?BS.blockR+(sig.on==="block"?12:0):18)*fadeK){blocked(d,!early);return;}
+      if(Math.hypot(ball.x-hd.x,ball.y-hd.y)<(dAb()?dAb().blockR+(BOSS&&sig.on==="block"?12:0):18)*fadeK){blocked(d,!early);return;}
     }
     if((early||saveZone) && ball.shooter===d && playerArmUp()){
       const hd=playerHand();
-      if(Math.hypot(ball.x-hd.x,ball.y-hd.y)<(PS?PS.blockR:18)*(ball.fade&&BOSS&&BS.fade?Math.max(0.35,1-BS.fade*1.3):1)){blocked(p,!early);return;}
+      if(Math.hypot(ball.x-hd.x,ball.y-hd.y)<(PS?PS.blockR:18)*(ball.fade&&dAb()&&dAb().fade?Math.max(0.35,1-dAb().fade*1.3):1)){blocked(p,!early);return;}
     }
     if(ball.make){ if(t>=ball.T) arrive(t); }
     else if(hit || t>=ball.T+0.25 || ball.y>FLOOR-BALL_R) missNow();
@@ -921,8 +921,8 @@ function update(dt){
     else if(!cpuOn){ if(ball.timer>1.6) inbound("p"); }
     else if(ball.timer>0.25){
       for(const e of [p,d]){
-        const R=(e===d&&BOSS)?24+BS.reb*40+(sig.on==="reb"?30:0):((e===p&&PS)?24+PS.reb*40:24);
-        const Hh=(e===d&&BOSS)?92*BS.size+(BS.arm-1)*30:((e===p&&PS)?92*PS.size+(PS.arm-1)*30:92);
+        const R=(e===d&&dAb())?24+dAb().reb*40+(BOSS&&sig.on==="reb"?30:0):((e===p&&PS)?24+PS.reb*40:24);
+        const Hh=(e===d&&dAb())?92*dAb().size+(dAb().arm-1)*30:((e===p&&PS)?92*PS.size+(PS.arm-1)*30:92);
         if(Math.abs(ball.x-e.x)<R && ball.y>e.y-Hh){takeBall(e);break;}
       }
       if(ball.state==="free" && ball.timer>6) takeBall(Math.abs(ball.x-p.x)<Math.abs(ball.x-d.x)?p:d);
@@ -1482,10 +1482,11 @@ function loadSave(){
     }
     if(s.sound===false) SND.on=false;
     if(s.crowd===false) SND.crowd=false;
+    if(s.twoAb===false) twoAb=false;
     if(s.h2h) for(const b of ["zackie","keelan"]) if(s.h2h[b]) h2h[b]={w:Math.max(0,s.h2h[b].w|0),l:Math.max(0,s.h2h[b].l|0)};
   }catch(_){}
 }
-function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({kits,human,wins,progress,medals,crowns,owned,skinOf,bonus,spent,extraBalls,shoesOwned,h2h,sound:SND.on,crowd:SND.crowd}));}catch(_){}}
+function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({kits,human,wins,progress,medals,crowns,owned,skinOf,bonus,spent,extraBalls,shoesOwned,h2h,twoAb,sound:SND.on,crowd:SND.crowd}));}catch(_){}}
 
 // ---------- screens: title, setup, play, pause, game over ----------
 let screen="title", mode="vs", overWinner="p", ui=[];
@@ -1661,13 +1662,16 @@ let BOSS=null, BS=null;
 let PS=null, dStun=0, dStunCool=0, pJoyLast=0;
 function playerStats(i){const st=bossStats(i), ab=BOSSES[i].ab; st.ab=ab; st.has=k=>ab.includes(k); return st;}
 // the sweet spot: Sharpshooter makes it wider everywhere, Deep Range on long shots, Fade-Away King on fades
-function pRange(z,fade){
-  const r=(fade?z.f:z.n).slice(); if(!PS || z.behind) return r;
-  let w=0; if(PS.has("sharp")) w+=Math.round(PS.s*12); if(PS.deep && z!==ZONES.inside) w+=Math.round(PS.deep*14); if(fade && PS.fade) w+=3;
+function pRange(z,fade){return abRange(PS,z,fade);}
+function abRange(S,z,fade){
+  const r=(fade?z.f:z.n).slice(); if(!S || z.behind) return r;
+  let w=0; if(S.has("sharp")) w+=Math.round(S.s*12); if(S.deep && z!==ZONES.inside) w+=Math.round(S.deep*14); if(fade && S.fade) w+=3;
   r[0]=Math.max(1,r[0]-w); r[1]=Math.min(99,r[1]+w); return r;
 }
-function pDunkChance(){return PS&&PS.has("dunk")?Math.min(0.92,0.5+PS.s*1.0):0.5;}
-function pWindChance(){return PS&&PS.has("dunk")?Math.min(0.85,WIND_MAKE+PS.s*0.8):WIND_MAKE;}
+function pDunkChance(){return dunkChanceOf(PS);}
+function pWindChance(){return windChanceOf(PS);}
+function dunkChanceOf(S){return S&&S.has("dunk")?Math.min(0.92,0.5+S.s*1.0):0.5;}
+function windChanceOf(S){return S&&S.has("dunk")?Math.min(0.85,WIND_MAKE+S.s*0.8):WIND_MAKE;}
 const isBossLevel=n=>n%STOPS===STOPS-1;
 function bossTier(i){return i<10?1:(i<20?2:(i<29?3:4));}
 function bossLook(i,avoid){
@@ -1776,11 +1780,12 @@ function bossDefend(dt){   // you have the ball
 }
 // how fast the player can move: frozen after a crossover, slowed when a glue defender is in the way
 function playerSpeedK(joy){
-  if(!BOSS) return 1;
+  if(!dAb() && !TWO.on) return 1;
   if(pStun>0) return 0;
+  if(!dAb()) return 1;
   const inWay=owner===p && d.ground && d.x>p.x && d.x-p.x<46 && joy>0;
-  if(inWay && sig.on==="guard") return 0.12;
-  if(inWay && BS.glue) return Math.max(0.25,1-BS.glue*2);
+  if(inWay && BOSS && sig.on==="guard") return 0.12;
+  if(inWay && dAb().glue) return Math.max(0.25,1-dAb().glue*2);
   return 1;
 }
 function drawSigFlash(){
@@ -2245,7 +2250,7 @@ function saveKey(code,role,key){ try{sessionStorage.setItem("h4l2p:"+code+":"+ro
 function loadKey(code,role){ try{return sessionStorage.getItem("h4l2p:"+code+":"+role)||"";}catch(_){return "";} }
 function netSend(obj){ try{ if(LINK.ws && LINK.ws.readyState===1) LINK.ws.send(JSON.stringify(obj)); }catch(_){} }
 // tell the other phone who's playing on this phone (the boy and his kit colours: nothing personal)
-function sendIntro(){ const k=kits[human]; netSend({t:"intro",boy:human,main:k.main,trim:k.trim,skin:skinOf[human]||null}); }
+function sendIntro(){ const k=kits[human]; netSend({t:"intro",boy:human,main:k.main,trim:k.trim,skin:skinOf[human]||null,ab:twoAb?1:0}); }
 
 async function hostGame(){
   if(LINK.busy) return; netReset("creating"); LINK.busy=true; LINK.note="";
@@ -2297,7 +2302,7 @@ function onNetMessage(raw){
   } else if(m.t==="intro"){
     if(!BOYS[m.boy]) return;
     const main=MAINS[m.main]?m.main:"blue", trim=TRIMS[m.trim]?m.trim:"white";
-    LINK.other={boy:m.boy,main,trim,skin:okSkin(m.skin)}; LINK.stage="connected"; LINK.note=""; if(!TWO.on) play("cheer",0.8);
+    LINK.other={boy:m.boy,main,trim,skin:okSkin(m.skin),ab:m.ab!==0}; LINK.stage="connected"; LINK.note=""; if(!TWO.on) play("cheer",0.8);
   }
 }
 
@@ -2351,11 +2356,17 @@ function drawOnline(){
     else if(st==="meeting") line="Found them! Saying hello"+dots;
     else if(st==="lost") {line="Connection lost. Reconnecting"+dots; col=C.warn;}
     if(st==="connected" && LINK.other){
-      const me=kitLook(BOYS[human],kits[human],1), them=kitLook(BOYS[LINK.other.boy],{main:LINK.other.main,trim:LINK.other.trim},-1);
+      const me=lookOf(human,skinOf[human]||null,kits[human],1), them=lookOf(LINK.other.boy,LINK.other.skin,{main:LINK.other.main,trim:LINK.other.trim},-1);
       faceBadge(me,W/2-110,232,30,MAINS[kits[human].main]); faceBadge(them,W/2+110,232,30,MAINS[LINK.other.main]);
       text("CONNECTED!",W/2,198,DISP(22),C.green,"center");
-      text(BOYS[human].name+" (this phone)",W/2-110,280,BODY(12,900),C.ink,"center");
-      text(BOYS[LINK.other.boy].name+" (other phone)",W/2+110,280,BODY(12,900),C.ink,"center");
+      const abLine=(skin,on)=>skin?(on?"Boss abilities ON":"Boss look only"):"";
+      text(me.name+" (this phone)",W/2-110,276,BODY(12,900),C.ink,"center");
+      text(them.name+" (other phone)",W/2+110,276,BODY(12,900),C.ink,"center");
+      text(abLine(skinOf[human],twoAb),W/2-110,292,BODY(10,900),C.warn,"center");
+      text(abLine(LINK.other.skin,LINK.other.ab),W/2+110,292,BODY(10,900),C.warn,"center");
+      const hm=h2h[human];
+      if(LINK.other.boy!==human && hm.w+hm.l>0) text("HEAD-TO-HEAD: "+BOYS[human].name+" "+hm.w+" · "+BOYS[LINK.other.boy].name+" "+hm.l,W/2,LINK.role==="host"?186:170,BODY(12,900),C.muted,"center");
+      if(skinOf[human]) button(W/2-130,326,260,44,twoAb?"BOSS ABILITIES: ON":"BOSS ABILITIES: OFF",{outline:"rgba(255,255,255,0.3)",size:14,sub:"tap to switch"},toggleTwoAb);
       text("vs",W/2,236,DISP(18),C.muted,"center");
       if(LINK.other.boy===human) text("You're both "+BOYS[human].name+"! One of you can switch on the map",W/2,300,BODY(11,900),C.warn,"center");
       if(LINK.role==="host") button(W/2+150,326,150,44,"PLAY",{fill:"#2F6FE4",sub:"Random arena"},twoStartAsHost);
@@ -2387,8 +2398,13 @@ const TWO={on:false,role:null,arena:0,pBoy:"zackie",dBoy:"keelan",
   rin:{jx:0,jy:0}, jumpReq:false, stealCool:0, ev:[], sendT:0, seq:0,
   snaps:[], last:null, paused:false, pausedBy:"", waiting:false, ended:false, winner:null, mute:false,
   gc:{on:false,power:0,fade:false,shown:0,lastPower:0,range:null,zone:null,sentFade:false,auto:false},
-  predX:null, lastIn:0, lastJy:0, sentWind:false, needUp:false, prevShoot:false, h2hDone:false};
+  predX:null, jxLast:0, lastIn:0, lastJy:0, sentWind:false, needUp:false, prevShoot:false, h2hDone:false};
 let h2h={zackie:{w:0,l:0},keelan:{w:0,l:0}};   // head-to-head record of each boy in 2 Player matches
+let twoAb=true;   // playing as a won boss in 2 Player: use his abilities (true) or just his look (false)
+let DS=null, pStunCool=0;     // the right player's boss abilities in 2 Player (PS is the left player's)
+const dAb=()=>BOSS?BS:DS;   // the right player's abilities: a computer boss's, or a 2 Player boss look's
+const abOf=(skin,on)=>{skin=okSkin(skin); return on&&skin?playerStats(+skin.slice(4)):null;};
+function toggleTwoAb(){ twoAb=!twoAb; saveGame(); sendIntro(); }
 const isHost=()=>TWO.on&&TWO.role==="host", isGuest=()=>TWO.on&&TWO.role==="guest";
 const meE=()=>isGuest()?d:p, foeE=()=>isGuest()?p:d;
 const n1=v=>Math.round(v*10)/10;
@@ -2408,21 +2424,23 @@ function twoStartAsHost(){
   if(!LINK.other || !LINK.ws) return;
   const arena=Math.floor(Math.random()*ARENAS.length);
   const s={t:"start",arena,pBoy:human,pKit:okKit(kits[human]),pSkin:skinOf[human]||null,
-    dBoy:LINK.other.boy,dKit:okKit({main:LINK.other.main,trim:LINK.other.trim}),dSkin:LINK.other.skin||null};
+    dBoy:LINK.other.boy,dKit:okKit({main:LINK.other.main,trim:LINK.other.trim}),dSkin:LINK.other.skin||null,
+    pAb:!!(skinOf[human]&&twoAb), dAb:!!(LINK.other.skin&&LINK.other.ab)};
   netSend(s); beginMatch("host",s);
 }
 function beginMatch(role,s){
   TWO.on=true; TWO.role=role; TWO.arena=s.arena; TWO.pBoy=s.pBoy; TWO.dBoy=s.dBoy;
   TWO.ended=false; TWO.winner=null; TWO.paused=false; TWO.waiting=false; TWO.snaps=[]; TWO.last=null; TWO.ev=[];
-  TWO.gc.on=false; TWO.gc.shown=0; TWO.predX=null; TWO.h2hDone=false; TWO.rin={jx:0,jy:0}; TWO.jumpReq=false;
-  BOSS=null; BS=null; PS=null; mode="2p";
+  TWO.gc.on=false; TWO.gc.shown=0; TWO.predX=null; TWO.h2hDone=false; TWO.rin={jx:0,jy:0}; TWO.jumpReq=false; TWO.jxLast=0;
+  BOSS=null; BS=null; mode="2p";
+  PS=abOf(s.pSkin,s.pAb===true); DS=abOf(s.dSkin,s.dAb===true);   // boss abilities, if that player chose them
   LOOK.p=lookOf(s.pBoy,s.pSkin,s.pKit,1); LOOK.p.who="p";
   LOOK.d=lookOf(s.dBoy,s.dSkin,s.dKit,-1); LOOK.d.who="d";
   C.p1=MAINS[s.pKit.main]; C.p2=MAINS[s.dKit.main]; NAME.p=LOOK.p.name; NAME.d=LOOK.d.name;
   if(C.p1===C.p2) C.p2=mix(C.p2,"#000000",0.3);   // same jersey colour: darken one so the scoreboard tells them apart
   Object.assign(stats,{score:0,cpu:0,made:0,att:0,streak:0,best:0,threes:0,dunks:0,blk:0,stl:0});
   stealCool=0; stealSwipe=0; stealMsg.t=0; prevAction=true; boardFx.t=0; crackFx.t=0;
-  SKILL=Object.assign({},SKILL_BASE); WIN=21; resetBoss(); cpuOn=true;
+  SKILL=Object.assign({},SKILL_BASE); WIN=21; resetBoss(); pStunCool=0; cpuOn=true;
   pendingInbound=null; gameOverT=0; celebrate.t=0; charge.shown=0; dblFx.t=0; cpuFx.t=0;
   moods.p.m=moods.d.m="happy"; moods.p.t=moods.d.t=0;
   touchJoy=0; touchJoyY=0; shootTouch=false; shootKey=false; needRelease=true;
@@ -2437,13 +2455,25 @@ function remoteUpdate(dt){
   if(TWO.stealCool>0) TWO.stealCool-=dt;
   const jx=TWO.rin.jx;
   if(TWO.jumpReq){ TWO.jumpReq=false;
-    if(d.ground && !cdunk.on){ d.vy=-380; d.ground=false; d.dbl=false; d.jumped=true; play("squeak"); }
-    else if(!d.ground && !d.dbl && (owner===p||(ball.state==="flight"&&ball.shooter===p)) && Math.abs(d.vy)<APEX_VY*2.5){ d.vy=-380; d.dbl=true; cpuFx={t:0.45,x:d.x,y:d.y}; TWO.ev.push(["j","d",n1(d.x),n1(d.y)]); }
+    if(d.ground && !cdunk.on && dStun<=0){ d.vy=-380*(DS?DS.jump:1); d.ground=false; d.dbl=false; d.jumped=true; play("squeak"); }
+    else if(!d.ground && !d.dbl && (owner===p||(ball.state==="flight"&&ball.shooter===p)) && Math.abs(d.vy)<APEX_VY*2.5*(DS&&DS.has("dbl")?2.2:1)){ d.vy=-380*(DS?DS.jump:1); d.dbl=true; cpuFx={t:0.45,x:d.x,y:d.y}; TWO.ev.push(["j","d",n1(d.x),n1(d.y)]); }
     else if(!d.ground) d.dbl=true;
   }
   if(tip.on){ updateTip(dt); body(d,dt); return; }
   if(cdunk.on){ runDunk(cdunk,d,-1,RL,CPU_DUNK_X,dt); return; }
-  d.x=clamp(d.x+jx*(cpu.charging?70:170)*dt,24,812);
+  if(dStunCool>0) dStunCool-=dt;
+  if(pStunCool>0) pStunCool-=dt;
+  if(pStun>0) pStun-=dt;
+  if(dStun>0){ dStun-=dt; d.lean=Math.sin(performance.now()/45)*0.14; body(d,dt); return; }   // ankles broken: he stumbles
+  const glued=PS&&PS.glue&&owner===d&&ball.state==="held"&&p.ground&&p.x<d.x&&d.x-p.x<46&&jx<0;   // Glue Defender in his way
+  const spd=(cpu.charging?70:170)*(DS?DS.speed*(ball.state==="free"?1+DS.reb*1.5:1):1)*(glued?Math.max(0.25,1-PS.glue*2):1);
+  // Ankle Breaker: a sharp change of direction right in front of the defender can drop him
+  if(DS&&DS.ankle&&owner===d&&ball.state==="held"&&!cpu.charging&&!cdunk.on&&p.x<d.x&&d.x-p.x<90&&Math.abs(jx)>0.5){
+    if(TWO.jxLast*jx<0 && pStunCool<=0 && Math.random()<DS.ankle*2.2){
+      pStun=0.6+DS.ankle; pStunCool=3; say("ANKLES BROKEN!",NAME.d+" crossed "+NAME.p+" over!",C.info); play("squeak"); play("cheer",0.75); setMood(p,"shock"); setMood(d,"happy"); }
+  }
+  if(Math.abs(jx)>0.5) TWO.jxLast=jx;
+  d.x=clamp(d.x+jx*spd*dt,24,812);
   if(cpu.charging && !d.ground){ d.vy = d.vy<0 ? d.vy+G*dt : Math.min(d.vy+G*0.15*dt,55); d.y+=d.vy*dt; if(d.y>=FLOOR){d.y=FLOOR; d.vy=0; d.ground=true;} }
   else body(d,dt);
   if(cpu.charging && owner!==d) cpu.charging=false;
@@ -2451,7 +2481,7 @@ function remoteUpdate(dt){
 }
 function remoteRelease(pw,fade,auto){
   if(!(owner===d && ball.state==="held" && cpu.charging)) return;
-  const z=zoneFor(d.x,RL), range=fade?z.f:z.n, h=handPos(d,-1,true);
+  const z=zoneFor(d.x,RL), range=abRange(DS,z,fade), h=handPos(d,-1,true);
   const make=!auto && !z.behind && pw>=range[0] && pw<=range[1];
   // misses mirror the host's: just early lands on the front of the rim, just late on the back
   const tx=z.behind?RL.x:(auto?RL.x-80:(make?RL.x:(pw<range[0]?RL.x+(20+(range[0]-pw)*1.5):RL.x-Math.min(15,11.8+Math.random()*2.6+(pw-range[1])*0.4))));
@@ -2464,20 +2494,20 @@ function remoteRelease(pw,fade,auto){
 }
 function remoteDunk(){
   if(!(owner===d && ball.state==="held" && d.ground && !cdunk.on && inKeyL(d.x))) return;
-  Object.assign(cdunk,{on:true,t:0,x0:d.x,success:Math.random()<0.5,resolved:false,hang:0,wind:false,w0:0});
+  Object.assign(cdunk,{on:true,t:0,x0:d.x,success:Math.random()<dunkChanceOf(DS),resolved:false,hang:0,wind:false,w0:0});
   d.ground=false; d.vy=0; cpu.charging=false; p.jumped=false;
   lastShot=NAME.d+" is going for the dunk!";
 }
 function remoteWindmill(){
-  if(cdunk.on && !cdunk.wind && !cdunk.resolved && cdunk.t<RISE*0.8){ cdunk.wind=true; cdunk.w0=cdunk.t; cdunk.success=Math.random()<WIND_MAKE; }
+  if(cdunk.on && !cdunk.wind && !cdunk.resolved && cdunk.t<RISE*0.8){ cdunk.wind=true; cdunk.w0=cdunk.t; cdunk.success=Math.random()<windChanceOf(DS); }
 }
 function remoteSteal(jx,jy){
   if(TWO.stealCool>0 || !(owner===p && ball.state==="held" && !dunk.on)) return;
   TWO.stealCool=STEAL_COOLDOWN; cpuSwipe=0.3;
   const toward=Math.sign(p.x-d.x)||-1, diagonal=jy>0.45 && jx*toward>0.3;
   if(!diagonal){ TWO.ev.push(["sm","Pull the joystick down towards him!"]); return; }
-  if(Math.abs(d.x-p.x)>STEAL_REACH){ TWO.ev.push(["sm","Too far away!"]); return; }
-  const chance=(charge.on||!p.ground)?0:SKILL_BASE.stealChance;
+  if(Math.abs(d.x-p.x)>STEAL_REACH*(DS?DS.arm:1)){ TWO.ev.push(["sm","Too far away!"]); return; }
+  const chance=(charge.on||!p.ground)?0:Math.min(0.9,SKILL_BASE.stealChance*(DS&&DS.pick?1+DS.pick*1.6:1));
   if(Math.random()<chance){
     play("swipe"); play("squeak"); play("gasp");
     owner=d; ball.state="held"; ball.live=false; charge.on=false; needRelease=true;
@@ -2505,7 +2535,7 @@ function onTwoMessage(m){
   }
   if(m.t==="start" && LINK.role==="guest" && !isGuest()){
     const s={arena:num(m.arena,0,ARENAS.length-1,0)|0, pBoy:BOYS[m.pBoy]?m.pBoy:"zackie", dBoy:BOYS[m.dBoy]?m.dBoy:"keelan",
-      pKit:okKit(m.pKit), dKit:okKit(m.dKit), pSkin:okSkin(m.pSkin), dSkin:okSkin(m.dSkin)};
+      pKit:okKit(m.pKit), dKit:okKit(m.dKit), pSkin:okSkin(m.pSkin), dSkin:okSkin(m.dSkin), pAb:m.pAb===true, dAb:m.dAb===true};
     beginMatch("guest",s); return true;
   }
   if(m.t==="start" && isGuest() && TWO.ended){ TWO.on=false; return onTwoMessage(m); }   // a rematch
@@ -2581,7 +2611,7 @@ function guestUpdate(dt){
   const serverX=d.x;
   if(tip.on||cdunk.on||TWO.predX===null) TWO.predX=serverX;
   else {
-    TWO.predX=clamp(TWO.predX+jx*(TWO.gc.on?70:170)*dt,24,812);
+    TWO.predX=clamp(TWO.predX+jx*(TWO.gc.on?70:170)*(DS?DS.speed*(ball.state==="free"?1+DS.reb*1.5:1):1)*dt,24,812);
     const err=serverX-TWO.predX;
     if(Math.abs(err)>70) TWO.predX+=err*0.3; else if(Math.abs(jx)<0.2) TWO.predX+=err*Math.min(1,dt*4);
   }
@@ -2616,7 +2646,7 @@ function guestControls(dt,jx,jy){
     gc.power+=dt/(z.fill||FILL)*100;
     gc.fade=jx>0.35;   // pull away from the hoop (to the right) for a fade-away
     if(gc.fade!==gc.sentFade){ gc.sentFade=gc.fade; netSend({t:"cf",v:gc.fade?1:0}); }
-    const range=gc.fade?z.f:z.n; if(before<range[0] && gc.power>=range[0]) play("tick");
+    const range=abRange(DS,z,gc.fade); if(before<range[0] && gc.power>=range[0]) play("tick");
     const auto=gc.power>=100;
     if(!shootDown || auto){
       if(auto) gc.power=100;
@@ -2677,7 +2707,7 @@ function drawTwoOver(){
 // the guest's power bar (its own, timed on its own phone)
 function drawGuestMeter(){
   const gc=TWO.gc; if(!(gc.on||gc.shown>0)) return;
-  const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?(fade?z.f:z.n):(gc.range||z.n), pw=gc.on?gc.power:gc.lastPower;
+  const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?abRange(DS,z,fade):(gc.range||abRange(DS,z,false)), pw=gc.on?gc.power:gc.lastPower;
   const x=W-170,y=86,w=30,h=180;
   text("POWER",x,y-12,BODY(12,900),C.ink);
   ctx.fillStyle=C.panel; rr(x,y,w,h,8); ctx.fill();
@@ -2705,7 +2735,7 @@ function drawGuestControls(){
   text(defending?"BLOCK":"JUMP",JUMP.x,JUMP.y+14,BODY(11,900),C.ink,"center");
   const down=shootKey||shootTouch;
   if(owner===p){
-    const near=Math.abs(d.x-p.x)<=STEAL_REACH;
+    const near=Math.abs(d.x-p.x)<=STEAL_REACH*(DS?DS.arm:1);
     if(near){const pulse=4+Math.sin(performance.now()/120)*3; ctx.strokeStyle=C.green; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,SHOOT.r+pulse,0,Math.PI*2); ctx.stroke();}
     ctx.fillStyle="#14A3B8"; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,down?39:SHOOT.r,0,Math.PI*2); ctx.fill();
     ctx.strokeStyle=down?C.warn:C.ink; ctx.lineWidth=3; ctx.stroke();
@@ -3036,7 +3066,7 @@ function drawPlayer(){
 function drawCpu(){
   if(!cpuOn) return;
   shadow(d);
-  const S=BOSS?BS.size:1, A=BOSS?BS.arm:1;
+  const S=dAb()?dAb().size:1, A=dAb()?dAb().arm:1;
   let hx=-16, hy=-24, ox=16, oy=-24;
   if(tip.on && !d.ground){hx=-20; hy=-84;}
   else if(cpuSwipe>0 && owner!==d){hx=-26*A/S; hy=-24;}
@@ -3056,7 +3086,7 @@ function drawCpu(){
   ctx.save(); ctx.translate(d.x,d.y); ctx.scale(S,S); ctx.translate(-d.x,-d.y);
   drawAthlete(d,F===1?LOOK.d:Object.assign({},LOOK.d,{dir:-LOOK.d.dir}),{x:hx*F,y:hy},{x:ox*F,y:oy},!d.ground,hang);
   ctx.restore();
-  if(BOSS && BS.speed>1 && Math.abs(d.spd||0)>150){   // Speedster streaks
+  if(dAb() && dAb().speed>1 && Math.abs(d.spd||0)>150){   // Speedster streaks
     const dir=Math.sign(d.spd); ctx.strokeStyle="rgba(255,255,255,0.55)"; ctx.lineWidth=2.5; ctx.lineCap="round";
     for(let i=0;i<3;i++){const y=d.y-30-i*18*S; ctx.beginPath(); ctx.moveTo(d.x-dir*(20+i*4),y); ctx.lineTo(d.x-dir*(46+i*8),y); ctx.stroke();}
   }
