@@ -1,5 +1,5 @@
 {
-  "name": "hoops-4-life-2p-rooms",
+  "name": "hoops-4-life-2p",
   "private": true,
   "description": "Game-room server for Hoops 4 Life 2P (Cloudflare Worker + Durable Objects)",
   "scripts": {
