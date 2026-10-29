@@ -2726,7 +2726,7 @@ function drawTwoOver(){
 function drawGuestMeter(){
   const gc=TWO.gc; if(!(gc.on||gc.shown>0)) return;
   const z=gc.zone||zoneFor(d.x,RL), fade=gc.on?gc.fade:false, range=gc.on?abRange(DS,z,fade):(gc.range||abRange(DS,z,false)), pw=gc.on?gc.power:gc.lastPower;
-  const x=W-170,y=86,w=30,h=180;
+  const x=W-158,y=86,w=18,h=180;
   text("POWER",x,y-12,BODY(12,900),C.ink);
   ctx.fillStyle=C.panel; rr(x,y,w,h,8); ctx.fill();
   ctx.save(); rr(x,y,w,h,8); ctx.clip();
@@ -2766,13 +2766,24 @@ function drawGuestControls(){
   else { ctx.fillStyle=C.ball; ctx.beginPath(); ctx.arc(SHOOT.x,SHOOT.y,down&&can?39:SHOOT.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=down?C.warn:C.seam; ctx.lineWidth=4; ctx.stroke(); text("SHOOT",SHOOT.x,SHOOT.y+1,DISP(14),C.navy,"center"); }
   ctx.globalAlpha=1;
 }
+// "HOOPS 4 LIFE" with the two O's drawn as basketballs (the boy's own ball)
+function ballTitle(cx,y,size){
+  ctx.font=DISP(size); const R=size*0.4, gap=size*0.06, wH=ctx.measureText("H").width, wR=ctx.measureText("PS 4 LIFE").width;
+  const total=wH+gap+4*R+gap*2+gap+wR; let x=cx-total/2;
+  bigTitle("H",x,y,size,"left"); x+=wH+gap;
+  const def=ballOf(human);
+  for(let i=0;i<2;i++){ const bx=x+R, by=y+size*0.02;
+    ctx.fillStyle=C.navy; ctx.beginPath(); ctx.arc(bx,by,R+3.5,0,Math.PI*2); ctx.fill();   // the same dark outline as the letters
+    drawBallAt(bx,by,R,def,i?0.5:-0.3); x+=2*R+gap; }
+  bigTitle("PS 4 LIFE",x+gap,y,size,"left"); ctx.textAlign="left";
+}
 function drawTitle(){
   ui=[]; drawCourt(); drawNetLayer(false); drawNetLayer(true); shade(0.72);
   // road map on the left, title and game modes in a column on the right
   drawRoadMap();
   const bw=320, bx=W-16-bw, cx=bx+bw/2;
   let ts=40; ctx.font=DISP(ts); while(ts>22 && ctx.measureText("HOOPS 4 LIFE").width>bw){ts-=2; ctx.font=DISP(ts);}
-  bigTitle("HOOPS 4 LIFE",cx,40,ts,"center");
+  ballTitle(cx,40,ts);
   button(324,16,176,44,"PLAYERS",{fill:"#7B4FD6",sub:owned[human].length+" of "+(2+BOSSES.length)+" unlocked"},()=>{screen="players";});
   button(324,66,176,44,"TROPHIES",{fill:"#14A3B8",sub:"Spend medals & crowns"},()=>{screen="trophies"; tro.stage="shop"; tro.msg.t=0;});
   drawPrizes(human,412,118);
@@ -3183,7 +3194,7 @@ function drawMeter(){
   const z=charge.zone||zoneFor(p.x,RR), fade=charge.on?charge.fade:false;
   const range=charge.on?pRange(z,fade):(charge.range||pRange(z,false));
   const pw=charge.on?charge.power:charge.lastPower;
-  const x=140,y=86,w=30,h=180;
+  const x=140,y=86,w=18,h=180;
   text("POWER",x,y-12,BODY(12,900),C.ink);
   ctx.fillStyle=C.panel; rr(x,y,w,h,8); ctx.fill();
   ctx.save(); rr(x,y,w,h,8); ctx.clip();
@@ -3196,11 +3207,11 @@ function drawMeter(){
   }
   ctx.fillStyle=C.red; ctx.fillRect(x,y,w,4);
   ctx.restore();
-  text("100",x+38,y+2,BODY(11,900),"#FF8A8A");
+  text("100",x+26,y+2,BODY(11,900),"#FF8A8A");
   if(!z.behind){
-    text(String(range[1]),x+38,by-3,BODY(11,900),C.green);
-    text(String(range[0]),x+38,by+bh+5,BODY(11,900),C.green);
-  } else text("NO SHOT",x+38,y+h/2,BODY(12,900),C.warn);
+    text(String(range[1]),x+26,by-3,BODY(11,900),C.green);
+    text(String(range[0]),x+26,by+bh+5,BODY(11,900),C.green);
+  } else text("NO SHOT",x+26,y+h/2,BODY(12,900),C.warn);
   text(Math.round(pw)+"%",x,y+h+16,DISP(16),(pw>=range[0]&&pw<=range[1])?C.green:C.ink);
   text(z.name.toUpperCase()+(fade?" · FADE":""),x,y+h+36,BODY(11,900),C.muted);
 }

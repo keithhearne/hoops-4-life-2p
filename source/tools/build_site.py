@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 src, out = sys.argv[1], sys.argv[2]
 os.makedirs(out, exist_ok=True)
 game = open(src).read()
+SUB = sys.argv[6] if len(sys.argv) > 6 else ""   # optional second line on the icon
 
 # --- icon: a shaded basketball on the arena navy, with "H4L" ---
 def icon(size, path, maskable=False):
@@ -32,11 +33,17 @@ def icon(size, path, maskable=False):
         font = ImageFont.truetype("DejaVuSans-Bold.ttf", int(r * 0.62))
     except OSError:
         font = ImageFont.load_default()
-    label = "H4L"
-    bb = d.textbbox((0, 0), label, font=font)
-    tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    tx, ty = cx - tw // 2 - bb[0], cy - th // 2 - bb[1]
-    d.text((tx, ty), label, font=font, fill=(255, 201, 60), stroke_width=w * 2, stroke_fill=(27, 35, 64))
+    def label(txt, f, mid, col):
+        bb = d.textbbox((0, 0), txt, font=f)
+        tw, th = bb[2] - bb[0], bb[3] - bb[1]
+        d.text((cx - tw // 2 - bb[0], mid - th // 2 - bb[1]), txt, font=f, fill=col, stroke_width=w * 2, stroke_fill=(27, 35, 64))
+    if SUB:   # a second line under "H4L", e.g. "2P" for the 2 Player app
+        label("H4L", font, cy - int(r * 0.24), (255, 201, 60))
+        try: small = ImageFont.truetype("DejaVuSans-Bold.ttf", int(r * 0.46))
+        except OSError: small = font
+        label(SUB, small, cy + int(r * 0.42), (255, 255, 255))
+    else:
+        label("H4L", font, cy, (255, 201, 60))
     im.resize((size, size), Image.LANCZOS).save(path)
 
 icon(192, os.path.join(out, "icon-192.png"))
