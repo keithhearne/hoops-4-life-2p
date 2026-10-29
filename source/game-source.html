@@ -2750,14 +2750,21 @@ function drawGuestControls(){
 }
 // "HOOPS 4 LIFE" with the two O's drawn as basketballs (the boy's own ball)
 function ballTitle(cx,y,size){
-  ctx.font=DISP(size); const R=size*0.4, gap=size*0.06, wH=ctx.measureText("H").width, wR=ctx.measureText("PS 4 LIFE").width;
-  const total=wH+gap+4*R+gap*2+gap+wR; let x=cx-total/2;
-  bigTitle("H",x,y,size,"left"); x+=wH+gap;
+  ctx.font=DISP(size); ctx.textBaseline="middle"; ctx.textAlign="left";
+  // measure the ink of the letters (not their boxes), so the balls sit evenly between H and P and level with the letters
+  const mH=ctx.measureText("H"), mR=ctx.measureText("PS 4 LIFE"), mO=ctx.measureText("O");
+  const capTop=mH.actualBoundingBoxAscent, capBot=mH.actualBoundingBoxDescent, midY=y+(capBot-capTop)/2;
+  const R=(capTop+capBot)/2*1.02, gap=size*0.07;
+  const hInk=mH.actualBoundingBoxRight, pLead=-mR.actualBoundingBoxLeft;   // H's right edge; blank space before P
+  const total=hInk+gap+4*R+gap+gap+(mR.width-pLead);
+  let x=cx-total/2;
+  bigTitle("H",x,y,size,"left");
+  let bx=x+hInk+gap+R;
   const def=ballOf(human);
-  for(let i=0;i<2;i++){ const bx=x+R, by=y+size*0.02;
-    ctx.fillStyle=C.navy; ctx.beginPath(); ctx.arc(bx,by,R+3.5,0,Math.PI*2); ctx.fill();   // the same dark outline as the letters
-    drawBallAt(bx,by,R,def,i?0.5:-0.3); x+=2*R+gap; }
-  bigTitle("PS 4 LIFE",x+gap,y,size,"left"); ctx.textAlign="left";
+  for(let i=0;i<2;i++){
+    ctx.fillStyle=C.navy; ctx.beginPath(); ctx.arc(bx,midY,R+3.5,0,Math.PI*2); ctx.fill();   // the same dark outline as the letters
+    drawBallAt(bx,midY,R,def,i?0.5:-0.3); bx+=2*R+gap; }
+  bigTitle("PS 4 LIFE",bx-R-pLead,y,size,"left"); ctx.textAlign="left";
 }
 function drawTitle(){
   ui=[]; drawCourt(); drawNetLayer(false); drawNetLayer(true); shade(0.72);
