@@ -2103,10 +2103,69 @@ function drawPrizes(boy,cx,y){
 }
 // the Players screen: Zackie and Keelan, then all 30 bosses (greyed out until they're won)
 let playersMsg={text:"",t:0};
+let infoCard=null;   // the player whose info card is open on the Players screen
+const ABIL_TXT={speed:"Runs faster up and down the court",hops:"Jumps higher",giant:"Bigger and taller: blocks and rebounds more",
+  arms:"Longer reach for blocks and steals",sharp:"A bigger sweet spot on every shot",deep:"A bigger sweet spot from long range",
+  quick:"Gets his shot off faster",block:"Swats away more shots",dbl:"Double jumps are easier",glue:"Slows down anyone driving past him",
+  pick:"Steals the ball more often",ankle:"Crossovers can knock defenders off balance",dunk:"Makes more dunks and windmills",
+  fade:"Fade-aways are harder to block",reb:"Wins more loose balls and rebounds"};
+function playAs(id){
+  const isBoy=!id.startsWith("boss"), i=isBoy?-1:+id.slice(4), name=isBoy?BOYS[id].name:BOSSES[i].name;
+  if(isBoy){human=id; skinOf[id]=null; mapScroll=null; saveGame(); playersMsg={text:"Playing as "+name,t:1.5};}
+  else {skinOf[human]=id; saveGame(); playersMsg={text:BOYS[human].name+" plays as "+name,t:1.8};}
+  infoCard=null; play("tick");
+}
+function drawPlayerCard(id){
+  ui=[]; shade(0.78);
+  const isBoy=!id.startsWith("boss"), i=isBoy?-1:+id.slice(4), open=owned[human].includes(id);
+  const lk=isBoy?kitLook(BOYS[id],kits[id],1):Object.assign(bossLook(i),{dir:1});
+  const a=isBoy?{p:lk.jersey,s:lk.trim,wood:"#D99A5B",e:"ball",name:"#"+BOYS[id].num}:ARENAS[i];
+  const st=isBoy?null:playerStats(i);
+  const x=150,y=18,w=544,h=354, px=x+14,pw=210;
+  ctx.fillStyle="rgba(27,35,64,0.98)"; rr(x,y,w,h,18); ctx.fill(); ctx.strokeStyle=a.p; ctx.lineWidth=3; ctx.stroke();
+  // the picture: him standing on his arena's floor and logo
+  ctx.save(); rr(px,y+14,pw,h-28,14); ctx.clip();
+  ctx.fillStyle=mix(a.p,"#10152B",0.7); ctx.fillRect(px,y+14,pw,h-28);
+  ctx.fillStyle=a.wood; ctx.fillRect(px,y+232,pw,h-246); drawEmblem(a,px+pw/2,y+256,76,0.27);
+  if(!open){ctx.filter="grayscale(1)"; ctx.globalAlpha=0.5;}
+  const e={x:px+pw/2,y:y+262,lean:0,spd:0,run:0,face:1}, sz=(st?st.size:1)*1.75;
+  ctx.save(); ctx.translate(e.x,e.y); ctx.scale(sz,sz); ctx.translate(-e.x,-e.y);
+  drawAthlete(e,lk,{x:-16,y:-24},{x:16,y:-24},false,false); ctx.restore();
+  ctx.filter="none"; ctx.globalAlpha=1;
+  if(!isBoy && open) drawCrown(e.x,e.y-(84*sz+10),9);
+  ctx.restore();
+  if(!open){ctx.fillStyle=C.navy; ctx.beginPath(); ctx.arc(px+pw/2,y+150,24,0,Math.PI*2); ctx.fill(); padlock(px+pw/2,y+152,C.ink);}
+  // the details
+  const tx=px+pw+20, tw=x+w-tx-18;
+  text(isBoy?"PLAYER · #"+BOYS[id].num:"LEVEL "+(i+1)+" BOSS · "+ARENAS[i].name.toUpperCase(),tx,y+30,BODY(11,900),C.warn);
+  const name=(isBoy?BOYS[id].name:BOSSES[i].name).toUpperCase();
+  let fs=26; ctx.font=DISP(fs); while(fs>15 && ctx.measureText(name).width>tw){fs--; ctx.font=DISP(fs);}
+  text(name,tx,y+58,DISP(fs),C.ink);
+  let ly=y+92;
+  if(isBoy){
+    text("No boss abilities: just pure skill!",tx,ly,BODY(13,800),C.muted); ly+=22;
+    text("Win bosses from Trophies to play as them.",tx,ly,BODY(12,800),C.muted);
+  } else {
+    text("ABILITIES",tx,ly,BODY(11,900),C.muted); ly+=20;
+    for(const k of BOSSES[i].ab){
+      text(ABIL[k],tx,ly,BODY(14,900),C.green); ly+=16;
+      text(ABIL_TXT[k]||"",tx,ly,BODY(11,800),"rgba(255,255,255,0.75)"); ly+=22;
+    }
+    ly+=4; text("SIGNATURE MOVE",tx,ly,BODY(11,900),C.muted); ly+=18;
+    text(BOSSES[i].sig,tx,ly,BODY(14,900),C.warn); ly+=16;
+    text("He uses it when you play against him",tx,ly,BODY(11,800),"rgba(255,255,255,0.6)");
+  }
+  // buttons
+  const by=y+h-58, playing=isBoy?(id===human&&!skinOf[human]):skinOf[human]===id;
+  if(playing) text(isBoy?"YOU'RE PLAYING AS HIM":BOYS[human].name.toUpperCase()+" IS PLAYING AS HIM",tx,by+22,BODY(12,900),C.warn);
+  else if(open) button(tx,by,170,44,"PLAY AS HIM",{fill:"#1FA35B"},()=>playAs(id));
+  else { text("LOCKED",tx,by+12,BODY(13,900),C.warn); text("Win him from a Trophy",tx,by+32,BODY(12,800),C.muted); }
+  button(x+w-118,by,100,44,"CLOSE",{},()=>{infoCard=null;});
+}
 function drawPlayers(){
   ui=[]; drawCourt(); shade(0.85);
   bigTitle("PLAYERS",W/2,30,28);
-  text(BOYS[human].name+"'s players · tap one to play as him · win locked bosses from Trophies",W/2,56,BODY(12,800),C.muted,"center");
+  text(BOYS[human].name+"'s players · tap one to see him · win locked bosses from Trophies",W/2,56,BODY(12,800),C.muted,"center");
   const list=["zackie","keelan",...BOSSES.map((_,i)=>"boss"+i)];
   const cols=8, cw=99, ch=66, x0=(W-cols*cw)/2, y0=72;
   list.forEach((id,k)=>{
@@ -2126,13 +2185,10 @@ function drawPlayers(){
       text(ln,x+42,y+h/2-(two?13:7)+j*12,BODY(fs,900),open?C.ink:"rgba(255,255,255,0.6)");});
     text(isBoy?(sel?"PLAYING":"#"+BOYS[id].num):"L"+(i+1)+" BOSS",x+42,y+h/2+(two?14:9),BODY(9,900),sel?C.warn:"rgba(255,255,255,0.45)");
     if(!open){ctx.fillStyle=C.navy; ctx.beginPath(); ctx.arc(x+w-11,y+11,8,0,Math.PI*2); ctx.fill(); padlock(x+w-11,y+12,C.muted);}
-    ui.push({x,y,w,h,fn:()=>{
-      if(isBoy){human=id; skinOf[id]=null; mapScroll=null; saveGame(); playersMsg={text:"Playing as "+name,t:1.5};}
-      else if(open){skinOf[human]=id; saveGame(); playersMsg={text:BOYS[human].name+" plays as "+name+": "+BOSSES[i].ab.map(a=>ABIL[a]).join(", "),t:2.6};}
-      else playersMsg={text:name+" is locked: win him from a Trophy",t:2};
-    }});
+    ui.push({x,y,w,h,fn:()=>{ infoCard=id; play("tick"); }});   // open his info card
   });
-  button(16,344,130,36,"BACK",{},()=>{screen="title";});
+  button(16,344,130,36,"BACK",{},()=>{screen="title"; infoCard=null;});
+  if(infoCard) drawPlayerCard(infoCard);
   if(playersMsg.t>0){
     playersMsg.t-=1/60; ctx.globalAlpha=Math.min(1,playersMsg.t*3);
     ctx.font=BODY(13,900); const w=ctx.measureText(playersMsg.text).width+28;
