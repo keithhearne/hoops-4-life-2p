@@ -1271,21 +1271,21 @@ const ARENAS=[
   {name:"Iron Works",        p:"#5A6270",s:"#FF7A1A",wood:"#C68C55",e:"shield"},
   {name:"Galaxy Garden",     p:"#14161F",s:"#2EC4B6",wood:"#B98250",e:"planet"},
   {name:"Falcon Center",     p:"#7A4E2D",s:"#F4E3C1",wood:"#D7A064",e:"wings"},
-  {name:"Lagoon Arena",      p:"#19B5B0",s:"#FF7F6B",wood:"#E0B582",e:"wave"},
-  {name:"Canyon Center",     p:"#C0582F",s:"#F1D3A2",wood:"#CC925A",e:"peak"},
-  {name:"Lantern Hall",      p:"#B3202A",s:"#F5C542",wood:"#C7894F",e:"ball"},
-  {name:"Midnight Arena",    p:"#16224A",s:"#C4CCD8",wood:"#B67E4D",e:"star"},
-  {name:"Storm Center",      p:"#3E4C59",s:"#FFD23F",wood:"#C99358",e:"bolt"},
-  {name:"Prism Arena",       p:"#6C3FD1",s:"#3DDC97",wood:"#D8A872",e:"diamond"},
-  {name:"Volcano Pit",       p:"#1E1A1A",s:"#FF3D2E",wood:"#A8693F",e:"flame"},
-  {name:"Orbit Arena",       p:"#4A2A7A",s:"#2EC4B6",wood:"#C68D59",e:"planet"},
-  {name:"Kingdom Center",    p:"#1F4FBF",s:"#F2C14E",wood:"#D29C61",e:"crown"},
-  {name:"Tidal Dome",        p:"#0F5E9C",s:"#57CC99",wood:"#DCAE78",e:"wave"},
-  {name:"Arrow Arena",       p:"#1B7F3B",s:"#FFFFFF",wood:"#D4A06A",e:"arrow"},
-  {name:"Solar Arena",       p:"#FF8C1A",s:"#7A1F1F",wood:"#CB9257",e:"sun"},
-  {name:"Fortress Arena",    p:"#2B2D33",s:"#D72638",wood:"#B27849",e:"shield"},
-  {name:"Starlight Coliseum",p:"#1C1C1C",s:"#E8C547",wood:"#BF8650",e:"comet"},
-  {name:"Titan Dome",        p:"#8C5A2B",s:"#1A1A1A",wood:"#C48B55",e:"wings"},
+  {name:"Lagoon Arena",      p:"#19B5B0",s:"#FF7F6B",wood:"#E0B582",e:"palm"},
+  {name:"Canyon Center",     p:"#C0582F",s:"#F1D3A2",wood:"#CC925A",e:"cactus"},
+  {name:"Lantern Hall",      p:"#B3202A",s:"#F5C542",wood:"#C7894F",e:"lantern"},
+  {name:"Midnight Arena",    p:"#16224A",s:"#C4CCD8",wood:"#B67E4D",e:"moon"},
+  {name:"Storm Center",      p:"#3E4C59",s:"#FFD23F",wood:"#C99358",e:"cloud"},
+  {name:"Prism Arena",       p:"#6C3FD1",s:"#3DDC97",wood:"#D8A872",e:"prism"},
+  {name:"Volcano Pit",       p:"#1E1A1A",s:"#FF3D2E",wood:"#A8693F",e:"volcano"},
+  {name:"Orbit Arena",       p:"#4A2A7A",s:"#2EC4B6",wood:"#C68D59",e:"atom"},
+  {name:"Kingdom Center",    p:"#1F4FBF",s:"#F2C14E",wood:"#D29C61",e:"castle"},
+  {name:"Tidal Dome",        p:"#0F5E9C",s:"#57CC99",wood:"#DCAE78",e:"anchor"},
+  {name:"Arrow Arena",       p:"#1B7F3B",s:"#FFFFFF",wood:"#D4A06A",e:"target"},
+  {name:"Solar Arena",       p:"#FF8C1A",s:"#7A1F1F",wood:"#CB9257",e:"rocket"},
+  {name:"Fortress Arena",    p:"#2B2D33",s:"#D72638",wood:"#B27849",e:"helmet"},
+  {name:"Starlight Coliseum",p:"#1C1C1C",s:"#E8C547",wood:"#BF8650",e:"stars"},
+  {name:"Titan Dome",        p:"#8C5A2B",s:"#1A1A1A",wood:"#C48B55",e:"dumbbell"},
   {name:"Hoops 4 Life Arena",p:"#10152B",s:"#FFC93C",wood:"#D99A5B",e:"crest"}
 ];
 // levels play in their own arena; quick games and practice play in the arena of the level the player has reached
@@ -1296,7 +1296,7 @@ function currentArena(){
   return ARENAS[Math.floor(n/STOPS)%ARENAS.length];
 }
 // emblem shapes, drawn in a unit circle (radius 1) centred on 0,0
-function emblemShape(kind){
+function emblemShape(kind,a){
   const P=pts=>{ctx.beginPath(); pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.closePath();};
   switch(kind){
     case "star": {const pts=[]; for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5, r=i%2?0.28:0.66; pts.push([Math.cos(a)*r,Math.sin(a)*r]);} P(pts); ctx.fill(); break;}
@@ -1323,6 +1323,90 @@ function emblemShape(kind){
       ctx.quadraticCurveTo(0.4*sx,-0.6,0.7*sx,-0.4); ctx.quadraticCurveTo(0.5*sx,-0.15,0.6*sx,-0.05); ctx.quadraticCurveTo(0.4*sx,0.05,0.48*sx,0.2);
       ctx.quadraticCurveTo(0.25*sx,0.25,0.06*sx,0.1); ctx.fill();} ctx.beginPath(); ctx.arc(0,0.12,0.12,0,Math.PI*2); ctx.fill(); break;
     case "arrow": P([[-0.62,0.12],[0.12,0.12],[0.12,0.36],[0.64,0],[0.12,-0.36],[0.12,-0.12],[-0.62,-0.12]]); ctx.fill(); break;
+    // --- arenas 15 to 29: each its own picture ---
+    case "palm": {   // a palm tree on a little island
+      ctx.beginPath(); ctx.ellipse(0,0.52,0.5,0.12,0,0,Math.PI*2); ctx.fill();
+      ctx.lineWidth=0.11; ctx.lineCap="round"; ctx.beginPath(); ctx.moveTo(-0.04,0.48); ctx.quadraticCurveTo(0.12,0.05,0.02,-0.3); ctx.stroke();
+      for(const [ex,ey,cx2,cy2] of [[-0.6,-0.08,-0.32,-0.52],[0.62,-0.04,0.34,-0.52],[-0.44,0.12,-0.3,-0.2],[0.48,0.14,0.32,-0.18],[0.04,-0.68,-0.12,-0.56]]){
+        ctx.beginPath(); ctx.moveTo(0.02,-0.3); ctx.quadraticCurveTo(cx2,cy2-0.08,ex,ey); ctx.quadraticCurveTo(cx2,cy2+0.12,0.02,-0.3); ctx.fill(); }
+      ctx.beginPath(); ctx.arc(-0.06,-0.24,0.07,0,Math.PI*2); ctx.arc(0.1,-0.22,0.07,0,Math.PI*2); ctx.fill(); break; }
+    case "cactus": {
+      ctx.lineCap="round"; ctx.lineJoin="round"; ctx.lineWidth=0.2;
+      ctx.beginPath(); ctx.moveTo(0,0.5); ctx.lineTo(0,-0.52); ctx.stroke();
+      ctx.lineWidth=0.14; ctx.beginPath(); ctx.moveTo(0,0.1); ctx.lineTo(-0.34,0.1); ctx.lineTo(-0.34,-0.26); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-0.06); ctx.lineTo(0.32,-0.06); ctx.lineTo(0.32,-0.4); ctx.stroke();
+      ctx.fillRect(-0.58,0.5,1.16,0.08); break; }
+    case "lantern": {
+      ctx.lineWidth=0.07; ctx.beginPath(); ctx.arc(0,-0.56,0.11,Math.PI,0); ctx.stroke();
+      ctx.fillRect(-0.24,-0.5,0.48,0.1); ctx.fillRect(-0.26,0.4,0.52,0.1);
+      ctx.beginPath(); ctx.moveTo(-0.18,-0.4); ctx.quadraticCurveTo(-0.42,0,-0.18,0.4); ctx.lineTo(0.18,0.4); ctx.quadraticCurveTo(0.42,0,0.18,-0.4); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=a.p; ctx.beginPath(); ctx.moveTo(0,0.24); ctx.bezierCurveTo(-0.14,0.2,-0.12,0.02,0,-0.18); ctx.bezierCurveTo(0.12,0.02,0.14,0.2,0,0.24); ctx.fill();   // the flame inside
+      ctx.fillStyle=a.s; ctx.fillRect(-0.16,0.5,0.32,0.08); break; }
+    case "moon": {
+      ctx.beginPath(); ctx.arc(-0.08,0.04,0.54,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=a.p; ctx.beginPath(); ctx.arc(0.16,-0.1,0.46,0,Math.PI*2); ctx.fill(); ctx.fillStyle=a.s;
+      for(const [x,y,k] of [[0.42,0.3,0.13],[0.24,-0.5,0.09],[0.55,-0.12,0.07]]){ const pts=[]; for(let i=0;i<8;i++){const q=-Math.PI/2+i*Math.PI/4, rr=i%2?k*0.38:k; pts.push([x+Math.cos(q)*rr,y+Math.sin(q)*rr]);} P(pts); ctx.fill(); }
+      break; }
+    case "cloud": {
+      ctx.beginPath(); ctx.arc(-0.26,-0.06,0.22,0,Math.PI*2); ctx.arc(0.04,-0.22,0.3,0,Math.PI*2); ctx.arc(0.32,-0.04,0.22,0,Math.PI*2); ctx.fill();
+      ctx.fillRect(-0.26,-0.06,0.58,0.22);
+      ctx.lineWidth=0.08; ctx.lineCap="round";
+      for(const x of [-0.3,-0.06,0.18,0.42]){ ctx.beginPath(); ctx.moveTo(x,0.3); ctx.lineTo(x-0.1,0.58); ctx.stroke(); } break; }
+    case "prism": {
+      ctx.lineWidth=0.06; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(-0.66,0.18); ctx.lineTo(-0.16,0.02); ctx.stroke();   // white light in
+      [0.06,0.18,0.3,0.42].forEach((dy,i)=>{ ctx.globalAlpha=1-i*0.2; ctx.beginPath(); ctx.moveTo(0.16,0.0+i*0.04); ctx.lineTo(0.66,dy+0.06); ctx.stroke(); }); ctx.globalAlpha=1;   // a fan of colours out
+      ctx.lineWidth=0.09; ctx.lineJoin="round"; P([[0,-0.44],[0.34,0.3],[-0.34,0.3]]); ctx.fillStyle=a.p; ctx.fill(); ctx.stroke(); ctx.fillStyle=a.s;
+      ctx.globalAlpha=0.35; P([[0,-0.3],[0.2,0.2],[-0.2,0.2]]); ctx.fill(); ctx.globalAlpha=1; break; }
+    case "volcano": {
+      P([[-0.66,0.5],[-0.2,-0.2],[0.2,-0.2],[0.66,0.5]]); ctx.fill();
+      ctx.fillStyle=a.p; P([[-0.2,-0.2],[-0.08,0.02],[0,-0.1],[0.1,0.06],[0.2,-0.2]]); ctx.fill(); ctx.fillStyle=a.s;   // lava running down
+      for(const [x,y,k] of [[0,-0.42,0.13],[-0.2,-0.56,0.08],[0.22,-0.58,0.1],[0.04,-0.7,0.06]]){ ctx.beginPath(); ctx.arc(x,y,k,0,Math.PI*2); ctx.fill(); } break; }
+    case "atom": {
+      ctx.lineWidth=0.06; for(const rot of [0,Math.PI/3,-Math.PI/3]){ ctx.beginPath(); ctx.ellipse(0,0,0.64,0.22,rot,0,Math.PI*2); ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(0,0,0.13,0,Math.PI*2); ctx.fill();
+      for(const [rot,t] of [[0,0.3],[Math.PI/3,2.4],[-Math.PI/3,4.2]]){   // one electron on each orbit
+        const ex=0.64*Math.cos(t), ey=0.22*Math.sin(t); ctx.beginPath(); ctx.arc(ex*Math.cos(rot)-ey*Math.sin(rot),ex*Math.sin(rot)+ey*Math.cos(rot),0.07,0,Math.PI*2); ctx.fill(); }
+      break; }
+    case "castle": {
+      const B=(x,y,w,h)=>ctx.fillRect(x,y,w,h);
+      B(-0.5,-0.12,1,0.62); B(-0.62,-0.34,0.3,0.84); B(0.32,-0.34,0.3,0.84); B(-0.16,-0.5,0.32,0.4);
+      for(const [x,w] of [[-0.62,0.3],[0.32,0.3],[-0.16,0.32]]){ const top=x===-0.16?-0.5:-0.34; for(let i=0;i<3;i++) if(i!==1) B(x+i*w/3,top-0.1,w/3,0.1); }
+      ctx.lineWidth=0.04; ctx.beginPath(); ctx.moveTo(0,-0.6); ctx.lineTo(0,-0.78); ctx.stroke(); P([[0,-0.78],[0.18,-0.72],[0,-0.66]]); ctx.fill();
+      ctx.fillStyle=a.p; ctx.beginPath(); ctx.moveTo(-0.13,0.5); ctx.lineTo(-0.13,0.24); ctx.arc(0,0.24,0.13,Math.PI,0); ctx.lineTo(0.13,0.5); ctx.fill();   // the gate
+      B(-0.5,0.0,0.06,0.12); B(0.44,0.0,0.06,0.12); ctx.fillStyle=a.s; break; }
+    case "anchor": {
+      ctx.lineWidth=0.1; ctx.lineCap="round";
+      ctx.beginPath(); ctx.arc(0,-0.5,0.11,0,Math.PI*2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-0.38); ctx.lineTo(0,0.56); ctx.moveTo(-0.28,-0.2); ctx.lineTo(0.28,-0.2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0,0.06,0.5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+      for(const sx of [-1,1]){ const ex=Math.cos(sx>0?0.15*Math.PI:0.85*Math.PI)*0.5, ey=0.06+Math.sin(0.15*Math.PI)*0.5; P([[ex,ey-0.2],[ex+0.13*sx,ey+0.02],[ex-0.08*sx,ey+0.04]]); ctx.fill(); } break; }
+    case "target": {
+      for(const [rr,col] of [[0.6,a.s],[0.45,a.p],[0.3,a.s],[0.15,a.p]]){ ctx.fillStyle=col; ctx.beginPath(); ctx.arc(-0.06,0.06,rr,0,Math.PI*2); ctx.fill(); }
+      ctx.fillStyle=a.s; ctx.strokeStyle=a.p; ctx.lineWidth=0.14; ctx.beginPath(); ctx.moveTo(-0.06,0.06); ctx.lineTo(0.6,-0.6); ctx.stroke();   // arrow with an outline
+      ctx.strokeStyle=a.s; ctx.lineWidth=0.06; ctx.beginPath(); ctx.moveTo(-0.06,0.06); ctx.lineTo(0.6,-0.6); ctx.stroke();
+      P([[0.6,-0.6],[0.44,-0.62],[0.62,-0.78],[0.64,-0.64]]); ctx.fill(); P([[0.6,-0.6],[0.62,-0.44],[0.78,-0.62],[0.64,-0.64]]); ctx.fill(); break; }
+    case "rocket": {
+      ctx.save(); ctx.rotate(Math.PI/4);
+      ctx.beginPath(); ctx.moveTo(0,-0.66); ctx.quadraticCurveTo(0.26,-0.36,0.2,0.3); ctx.lineTo(-0.2,0.3); ctx.quadraticCurveTo(-0.26,-0.36,0,-0.66); ctx.fill();
+      P([[0.2,0.04],[0.4,0.4],[0.18,0.3]]); ctx.fill(); P([[-0.2,0.04],[-0.4,0.4],[-0.18,0.3]]); ctx.fill();
+      ctx.fillStyle=a.p; ctx.beginPath(); ctx.arc(0,-0.2,0.1,0,Math.PI*2); ctx.fill(); ctx.fillStyle=a.s;   // the window
+      P([[-0.12,0.36],[0,0.66],[0.12,0.36]]); ctx.fill(); ctx.restore(); break; }
+    case "helmet": {
+      ctx.beginPath(); ctx.moveTo(-0.42,0.56); ctx.lineTo(-0.42,-0.1); ctx.quadraticCurveTo(-0.42,-0.58,0,-0.6); ctx.quadraticCurveTo(0.42,-0.58,0.42,-0.1); ctx.lineTo(0.42,0.56); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=a.p; ctx.fillRect(-0.34,-0.14,0.68,0.1);   // the eye slit
+      for(let i=0;i<4;i++) ctx.fillRect(0.06+i*0.08,0.08,0.04,0.3);   // breathing holes
+      ctx.fillRect(-0.03,-0.04,0.06,0.54); ctx.fillStyle=a.s;
+      ctx.beginPath(); ctx.moveTo(0,-0.6); ctx.quadraticCurveTo(-0.1,-0.82,0.24,-0.84); ctx.quadraticCurveTo(0.08,-0.72,0.06,-0.58); ctx.fill(); break; }   // a plume
+    case "stars": {   // a constellation joined by lines
+      const pts=[[-0.56,0.3],[-0.3,0.12],[-0.02,0.2],[0.16,-0.08],[0.5,-0.02],[0.56,-0.4],[0.22,-0.46]];
+      ctx.lineWidth=0.035; ctx.beginPath(); pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.lineTo(0.16,-0.08); ctx.stroke();
+      pts.forEach(([x,y],j)=>{ const k=j%3===0?0.12:0.08, q=[]; for(let i=0;i<8;i++){const t=-Math.PI/2+i*Math.PI/4, rr=i%2?k*0.4:k; q.push([x+Math.cos(t)*rr,y+Math.sin(t)*rr]);} P(q); ctx.fill(); }); break; }
+    case "dumbbell": {
+      ctx.save(); ctx.rotate(-0.35);
+      ctx.fillRect(-0.4,-0.05,0.8,0.1);
+      for(const sx of [-1,1]){ ctx.fillRect(sx*0.4-(sx<0?0.14:0),-0.32,0.14,0.64); ctx.fillRect(sx*0.56-(sx<0?0.1:0),-0.22,0.1,0.44); }
+      ctx.restore(); break; }
     case "crest": {const pts=[]; for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5, r=i%2?0.24:0.5; pts.push([Math.cos(a)*r,Math.sin(a)*r-0.08]);} P(pts); ctx.fill();
       ctx.font="900 0.36px Bungee, Arial Black, sans-serif"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("H4L",0,0.48); break;}
   }
@@ -1333,7 +1417,7 @@ function drawEmblem(a,cx,cy,r,sy){
   ctx.fillStyle=a.p; ctx.beginPath(); ctx.arc(0,0,1,0,Math.PI*2); ctx.fill();
   ctx.strokeStyle=a.s; ctx.lineWidth=0.1; ctx.beginPath(); ctx.arc(0,0,0.88,0,Math.PI*2); ctx.stroke();
   ctx.strokeStyle="rgba(255,255,255,0.55)"; ctx.lineWidth=0.05; ctx.beginPath(); ctx.arc(0,0,1,0,Math.PI*2); ctx.stroke();
-  ctx.fillStyle=a.s; ctx.strokeStyle=a.s; emblemShape(a.e);
+  ctx.fillStyle=a.s; ctx.strokeStyle=a.s; emblemShape(a.e,a);
   ctx.restore();
 }
 // a seeded crowd so every arena has the same fans every time
